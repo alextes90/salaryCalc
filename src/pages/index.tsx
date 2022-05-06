@@ -249,9 +249,15 @@ const IndexPage = () => {
                 <ResAmounts>{toFixed(calcRes.myBenefit)}zl</ResAmounts>
               </ResContainer>
               <ResContainer as="strong">
-                Netto:{" "}
+                Netto zl:{" "}
                 <ResAmounts>
                   {toFixed(calcRes.net - calcRes.multisportToMinus)}zl
+                </ResAmounts>
+              </ResContainer>
+              <ResContainer as="strong">
+                Netto USD:{" "}
+                <ResAmounts>
+                  {toFixed((calcRes.net - calcRes.multisportToMinus) / usd)}$
                 </ResAmounts>
               </ResContainer>
               <br />
