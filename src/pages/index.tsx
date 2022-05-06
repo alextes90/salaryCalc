@@ -156,10 +156,7 @@ const IndexPage = () => {
     <main style={pageStyles}>
       <title>Home Page</title>
       <h1 style={headingStyles}>
-        Salary calculator for employees.
-        <br />
-        <span style={headingAccentStyles}>thx Evgeny for that</span>
-        🎉🎉🎉
+        Salary calculator for employees. 🎉🎉🎉
       </h1>
       <Container>
         <FormWrapper>
