@@ -20,7 +20,7 @@ const headingAccentStyles = {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-
+  align-items: center;
   justify-content: space-around;
   width: 100%;
 `;
@@ -204,7 +204,18 @@ const IndexPage = () => {
               </strong>
             </Results>
           ) : (
-            <h2>Press Submit to see results</h2>
+            <>
+              <h2>Press Submit to see results</h2>
+              <StaticImage
+                src={`../images/icon.png`}
+                objectFit="contain"
+                objectPosition="left"
+                alt="card icon"
+                width={300}
+                placeholder="tracedSVG"
+                quality={100}
+              />
+            </>
           )}
         </FormWrapper>
         <StaticImage
