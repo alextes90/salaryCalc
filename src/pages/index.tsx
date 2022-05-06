@@ -1,6 +1,6 @@
 import { StaticImage } from "gatsby-plugin-image";
 import styled, { keyframes } from "styled-components";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, Suspense, useEffect, useState } from "react";
 import "../index.css";
 import { net, Res } from "../utils";
 // styles
@@ -10,11 +10,8 @@ const pageStyles = {
   fontFamily: "-apple-system, Roboto, sans-serif, serif",
 };
 const headingStyles = {
-  marginTop: 0,
+  marginTop: "40px",
   marginBottom: 64,
-};
-const headingAccentStyles = {
-  color: "#663399",
 };
 
 const Container = styled.div`
@@ -49,6 +46,12 @@ const Label = styled.label`
   justify-content: space-between;
   margin-bottom: 20px;
 `;
+const ResContainer = styled.span`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: baseline;
+`;
 
 const InputField = styled.input`
   margin-left: 10px;
@@ -60,6 +63,13 @@ const ResAmounts = styled.span`
 `;
 
 const ResLabels = styled.b``;
+
+const USDzl = styled.b`
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+`;
 
 const glowingbutton = keyframes`
   0% {
@@ -131,13 +141,14 @@ interface ResState extends Res {
   multisportToMinus: number;
 }
 
-const toFixed = (val:number) => (parseInt(val * 100)) / 100;
+const toFixed = (val: number) => val.toFixed(2);
 
 // markup
 const IndexPage = () => {
   const [gross, setGross] = useState(10000);
   const [tax, setTax] = useState(17);
   const [multisport, setMultisport] = useState(118);
+  const [usd, setUsd] = useState(0);
   const [calcRes, setCalcRes] = useState<ResState | null>(null);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -154,12 +165,34 @@ const IndexPage = () => {
     setCalcRes({ ...net(gross, tax), myBenefit, multisportToMinus });
   };
 
+  useEffect(() => {
+    const fetchCourse = async () => {
+      const formData = new FormData();
+      formData.append("c_type", "sell");
+      formData.append("c_amount", "1");
+      formData.append("c_currency", "USD");
+      try {
+        const rawResponse = await fetch(
+          "https://cors-anywhere.herokuapp.com/https://www.centkantor.pl/scripts/calc.php?type=calc",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        const content = await rawResponse.json();
+        setUsd(content.value);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchCourse();
+  }, []);
+
   return (
     <main style={pageStyles}>
       <title>Home Page</title>
-      <h1 style={headingStyles}>
-        Salary calculator for employees. 🎉🎉🎉
-      </h1>
+      <h1 style={headingStyles}>Salary calculator for employees 🎉🎉🎉</h1>
+      <USDzl>{usd ? `1USD = ${usd}zl` : "Loading..."}</USDzl>
       <Container>
         <FormWrapper>
           <Form onSubmit={onSubmit}>
@@ -194,28 +227,29 @@ const IndexPage = () => {
           </Form>
           {calcRes ? (
             <Results>
-              <span>
+              <ResContainer>
                 <ResLabels>ZUS: </ResLabels>
-                <ResAmounts>{toFixed(calcRes.zus)}</ResAmounts>
-              </span>
-              <span>
+                <ResAmounts>{toFixed(calcRes.zus)}zl</ResAmounts>
+              </ResContainer>
+              <ResContainer>
                 <ResLabels>Health insurance: </ResLabels>
-                <ResAmounts>{toFixed(calcRes.healthInsurance)}</ResAmounts>
-              </span>
-              <span>
+                <ResAmounts>{toFixed(calcRes.healthInsurance)}zl</ResAmounts>
+              </ResContainer>
+              <ResContainer>
                 <ResLabels>Tax: </ResLabels>
                 <ResAmounts>{toFixed(calcRes.tax)}</ResAmounts>
-              </span>
+              </ResContainer>
               <br />
-              <strong>
-                MyBenefit: <ResAmounts>{toFixed(calcRes.myBenefit)}</ResAmounts>
-              </strong>
-              <strong>
+              <ResContainer as="strong">
+                MyBenefit:{" "}
+                <ResAmounts>{toFixed(calcRes.myBenefit)}zl</ResAmounts>
+              </ResContainer>
+              <ResContainer as="strong">
                 Netto:{" "}
                 <ResAmounts>
-                  {toFixed(calcRes.net - calcRes.multisportToMinus)}
+                  {toFixed(calcRes.net - calcRes.multisportToMinus)}zl
                 </ResAmounts>
-              </strong>
+              </ResContainer>
             </Results>
           ) : (
             <>
