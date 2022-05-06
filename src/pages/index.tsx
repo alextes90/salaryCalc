@@ -126,11 +126,17 @@ const Button = styled.button`
   }
 `;
 
+interface ResState extends Res {
+  myBenefit: number;
+  multisportToMinus: number;
+}
+
 // markup
 const IndexPage = () => {
   const [gross, setGross] = useState(10000);
   const [tax, setTax] = useState(17);
-  const [calcRes, setCalcRes] = useState<Res | null>(null);
+  const [multisport, setMultisport] = useState(118);
+  const [calcRes, setCalcRes] = useState<ResState | null>(null);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -141,8 +147,11 @@ const IndexPage = () => {
       tax < 0
     )
       return alert("Gross and Tax should be a positive numbers!");
-    setCalcRes(net(gross, tax));
+    const myBenefit = 100 - multisport > 0 ? 100 - multisport : 0;
+    const multisportToMinus = multisport < 100 ? 0 : multisport - 100;
+    setCalcRes({ ...net(gross, tax), myBenefit, multisportToMinus });
   };
+
   return (
     <main style={pageStyles}>
       <title>Home Page</title>
@@ -168,24 +177,24 @@ const IndexPage = () => {
               Tax rate (17 or 32):
               <InputField
                 type="text"
-                name="name"
+                name="tax"
                 value={tax}
                 onChange={(e) => setTax(+e.target.value)}
+              />
+            </Label>
+            <Label>
+              Multisport price:
+              <InputField
+                type="text"
+                name="sport"
+                value={multisport}
+                onChange={(e) => setMultisport(+e.target.value)}
               />
             </Label>
             <Button type="submit">Submit</Button>
           </Form>
           {calcRes ? (
             <Results>
-              <span>
-                <ResLabels>Entered tax_rate: </ResLabels>
-                <ResAmounts>{calcRes.tax_rate}</ResAmounts>
-              </span>
-              <span>
-                <ResLabels>Entered gross: </ResLabels>
-                <ResAmounts>{calcRes.gross}</ResAmounts>
-              </span>
-              <br />
               <span>
                 <ResLabels>ZUS: </ResLabels>
                 <ResAmounts>{calcRes.zus}</ResAmounts>
@@ -200,7 +209,13 @@ const IndexPage = () => {
               </span>
               <br />
               <strong>
-                Netto: <ResAmounts>{calcRes.net}</ResAmounts>
+                MyBenefit: <ResAmounts>{calcRes.myBenefit}</ResAmounts>
+              </strong>
+              <strong>
+                Netto:{" "}
+                <ResAmounts>
+                  {calcRes.net - calcRes.multisportToMinus}
+                </ResAmounts>
               </strong>
             </Results>
           ) : (
