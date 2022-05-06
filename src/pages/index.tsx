@@ -131,6 +131,8 @@ interface ResState extends Res {
   multisportToMinus: number;
 }
 
+const toFixed = (val:number) => (parseInt(val * 100)) / 100;
+
 // markup
 const IndexPage = () => {
   const [gross, setGross] = useState(10000);
@@ -194,24 +196,24 @@ const IndexPage = () => {
             <Results>
               <span>
                 <ResLabels>ZUS: </ResLabels>
-                <ResAmounts>{calcRes.zus}</ResAmounts>
+                <ResAmounts>{toFixed(calcRes.zus)}</ResAmounts>
               </span>
               <span>
                 <ResLabels>Health insurance: </ResLabels>
-                <ResAmounts>{calcRes.healthInsurance}</ResAmounts>
+                <ResAmounts>{toFixed(calcRes.healthInsurance)}</ResAmounts>
               </span>
               <span>
                 <ResLabels>Tax: </ResLabels>
-                <ResAmounts>{calcRes.tax}</ResAmounts>
+                <ResAmounts>{toFixed(calcRes.tax)}</ResAmounts>
               </span>
               <br />
               <strong>
-                MyBenefit: <ResAmounts>{calcRes.myBenefit}</ResAmounts>
+                MyBenefit: <ResAmounts>{toFixed(calcRes.myBenefit)}</ResAmounts>
               </strong>
               <strong>
                 Netto:{" "}
                 <ResAmounts>
-                  {calcRes.net - calcRes.multisportToMinus}
+                  {toFixed(calcRes.net - calcRes.multisportToMinus)}
                 </ResAmounts>
               </strong>
             </Results>
