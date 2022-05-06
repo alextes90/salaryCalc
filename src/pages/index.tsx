@@ -7,11 +7,10 @@ import { SEO } from "../components/SEO";
 // styles
 const pageStyles = {
   color: "#232129",
-  padding: 40,
+  padding: "20px 40px",
   fontFamily: "-apple-system, Roboto, sans-serif, serif",
 };
 const headingStyles = {
-  marginTop: "40px",
   marginBottom: 64,
 };
 
@@ -66,9 +65,12 @@ const ResAmounts = styled.span`
 const ResLabels = styled.b``;
 
 const USDzl = styled.b`
-  position: fixed;
-  top: 10px;
-  right: 10px;
+  position: absolute;
+  top: 136px;
+  left: 8px;
+  text-decoration: #509ec0 wavy underline;
+  transform: rotate(-30deg);
+  z-index: 1;
   font-size: 1.5rem;
 `;
 
@@ -194,7 +196,7 @@ const IndexPage = () => {
       <SEO title="SalaryCalc" />
       <title>Home Page</title>
       <h1 style={headingStyles}>Salary calculator for employees 🎉🎉🎉</h1>
-      <USDzl>{usd ? `1USD = ${usd}zl` : "Loading..."}</USDzl>
+      {/* <USDzl>{usd ? `1USD = ${usd}zl` : "Loading..."}</USDzl> */}
       <Container>
         <FormWrapper>
           <Form onSubmit={onSubmit}>
@@ -252,10 +254,18 @@ const IndexPage = () => {
                   {toFixed(calcRes.net - calcRes.multisportToMinus)}zl
                 </ResAmounts>
               </ResContainer>
+              <br />
+              <ResContainer as="strong">
+                TIP:{" "}
+                <ResAmounts>
+                  <span>1USD = ${usd}zl</span>
+                </ResAmounts>
+              </ResContainer>
             </Results>
           ) : (
-            <>
+            <div style={{ position: "relative" }}>
               <h2>Press Submit to see results</h2>
+              <USDzl>{usd ? `1$ = ${usd}zl` : "Loading..."}</USDzl>
               <StaticImage
                 src={`../images/icon.png`}
                 objectFit="contain"
@@ -265,7 +275,7 @@ const IndexPage = () => {
                 placeholder="tracedSVG"
                 quality={100}
               />
-            </>
+            </div>
           )}
         </FormWrapper>
         <StaticImage

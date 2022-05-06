@@ -40,7 +40,7 @@ export const SEO: FC<Props> = ({
   const { site } = useStaticQuery<QueryTypes>(SEOStaticQuery);
 
   const metaDescription = description || site.siteMetadata.description;
-  const defaultTitle = site.siteMetadata?.title;
+  // const defaultTitle = site.siteMetadata?.title;
 
   return (
     <Helmet
