@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import React, { FormEvent, Suspense, useEffect, useState } from "react";
 import "../index.css";
 import { net, Res } from "../utils";
+import { SEO } from "../components/SEO";
 // styles
 const pageStyles = {
   color: "#232129",
@@ -190,6 +191,7 @@ const IndexPage = () => {
 
   return (
     <main style={pageStyles}>
+      <SEO title="SalaryCalc" />
       <title>Home Page</title>
       <h1 style={headingStyles}>Salary calculator for employees 🎉🎉🎉</h1>
       <USDzl>{usd ? `1USD = ${usd}zl` : "Loading..."}</USDzl>

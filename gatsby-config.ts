@@ -3,7 +3,7 @@ import type { GatsbyConfig } from "gatsby";
 const config: GatsbyConfig = {
   siteMetadata: {
     title: `Salary Calc`,
-    description: "calc your netto by uop",
+    description: "calc your netto by UOP",
     author: "MadaShindeInai",
     siteUrl: `https://salarycalc.gatsbyjs.io/`,
   },
