@@ -1,152 +1,15 @@
 import { StaticImage } from "gatsby-plugin-image";
-import styled, { keyframes } from "styled-components";
-import React, { FormEvent, Suspense, useEffect, useState } from "react";
+import * as S from "../styled";
+import React, { FormEvent, useEffect, useState } from "react";
 import "../index.css";
 import { net, Res } from "../utils";
 import { SEO } from "../components/SEO";
-// styles
-const pageStyles = {
-  color: "#232129",
-  padding: "20px 40px",
-  fontFamily: "-apple-system, Roboto, sans-serif, serif",
-};
-const headingStyles = {
-  marginBottom: 64,
-};
-
-const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-around;
-  width: 100%;
-`;
-
-const FormWrapper = styled.div``;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  justify-content: center;
-  margin-bottom: 40px;
-  font-size: 1.5rem;
-`;
-
-const Results = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 40px;
-  font-size: 1.5rem;
-`;
-
-const Label = styled.label`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-`;
-const ResContainer = styled.span`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  align-items: baseline;
-`;
-
-const InputField = styled.input`
-  margin-left: 10px;
-  height: 25px;
-`;
-const ResAmounts = styled.span`
-  font-size: 2rem;
-  color: #663399;
-`;
-
-const ResLabels = styled.b``;
-
-const USDzl = styled.b`
-  position: absolute;
-  top: 136px;
-  left: 8px;
-  text-decoration: #509ec0 wavy underline;
-  transform: rotate(-30deg);
-  z-index: 1;
-  font-size: 1.5rem;
-`;
-
-const glowingbutton = keyframes`
-  0% {
-    background-position: 0 0;
-  }
-  50% {
-    background-position: 400% 0;
-  }
-  100% {
-    background-position: 0 0;
-  }
-`;
-
-const Button = styled.button`
-  padding: 0.6em 2em;
-  border: none;
-  outline: none;
-  color: rgb(255, 255, 255);
-  background: #111;
-  cursor: pointer;
-  position: relative;
-  z-index: 0;
-  border-radius: 10px;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  &:before {
-    content: "";
-    background: linear-gradient(
-      45deg,
-      #ff0000,
-      #ff7300,
-      #fffb00,
-      #48ff00,
-      #00ffd5,
-      #002bff,
-      #7a00ff,
-      #ff00c8,
-      #ff0000
-    );
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    background-size: 400%;
-    z-index: -1;
-    filter: blur(5px);
-    -webkit-filter: blur(5px);
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    animation: ${glowingbutton} 20s linear infinite;
-    transition: opacity 0.3s ease-in-out;
-    border-radius: 10px;
-  }
-  &:after {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #222;
-    left: 0;
-    top: 0;
-    border-radius: 10px;
-  }
-`;
 
 interface ResState extends Res {
   myBenefit: number;
   multisportToMinus: number;
 }
 
-const toFixed = (val: number) => val.toFixed(2);
-
-// markup
 const IndexPage = () => {
   const [gross, setGross] = useState(10000);
   const [tax, setTax] = useState(17);
@@ -167,7 +30,7 @@ const IndexPage = () => {
     const multisportToMinus = multisport < 100 ? 0 : multisport - 100;
     setCalcRes({ ...net(gross, tax), myBenefit, multisportToMinus });
   };
-
+  // https://cors-anywhere.herokuapp.com/
   useEffect(() => {
     const fetchCourse = async () => {
       const formData = new FormData();
@@ -192,86 +55,88 @@ const IndexPage = () => {
   }, []);
 
   return (
-    <main style={pageStyles}>
+    <S.PageStyles>
       <SEO title="SalaryCalc" />
       <title>Home Page</title>
-      <h1 style={headingStyles}>Salary calculator for employees 🎉🎉🎉</h1>
-      {/* <USDzl>{usd ? `1USD = ${usd}zl` : "Loading..."}</USDzl> */}
-      <Container>
-        <FormWrapper>
-          <Form onSubmit={onSubmit}>
-            <Label>
+      <S.HeadingStyles>Salary calculator for employees 🎉🎉🎉</S.HeadingStyles>
+      <S.Container>
+        <S.FormWrapper>
+          <S.Form onSubmit={onSubmit}>
+            <S.Label>
               Salary gross:
-              <InputField
+              <S.InputField
                 type="number"
                 name="gross"
                 value={gross}
                 onChange={(e) => setGross(+e.target.value)}
               />
-            </Label>
-            <Label>
+            </S.Label>
+            <S.Label>
               Tax rate (17 or 32):
-              <InputField
+              <S.InputField
                 type="text"
                 name="tax"
                 value={tax}
                 onChange={(e) => setTax(+e.target.value)}
               />
-            </Label>
-            <Label>
+            </S.Label>
+            <S.Label>
               Multisport price:
-              <InputField
+              <S.InputField
                 type="text"
                 name="sport"
                 value={multisport}
                 onChange={(e) => setMultisport(+e.target.value)}
               />
-            </Label>
-            <Button type="submit">Submit</Button>
-          </Form>
+            </S.Label>
+            <S.Button type="submit">Submit</S.Button>
+          </S.Form>
           {calcRes ? (
-            <Results>
-              <ResContainer>
-                <ResLabels>ZUS: </ResLabels>
-                <ResAmounts>{toFixed(calcRes.zus)}zl</ResAmounts>
-              </ResContainer>
-              <ResContainer>
-                <ResLabels>Health insurance: </ResLabels>
-                <ResAmounts>{toFixed(calcRes.healthInsurance)}zl</ResAmounts>
-              </ResContainer>
-              <ResContainer>
-                <ResLabels>Tax: </ResLabels>
-                <ResAmounts>{toFixed(calcRes.tax)}</ResAmounts>
-              </ResContainer>
+            <S.Results>
+              <S.ResContainer>
+                <S.ResLabels>ZUS: </S.ResLabels>
+                <S.ResAmounts>{calcRes.zus}zl</S.ResAmounts>
+              </S.ResContainer>
+              <S.ResContainer>
+                <S.ResLabels>Health insurance: </S.ResLabels>
+                <S.ResAmounts>
+                  {calcRes.healthInsurance.toFixed(2)}zl
+                </S.ResAmounts>
+              </S.ResContainer>
+              <S.ResContainer>
+                <S.ResLabels>Tax: </S.ResLabels>
+                <S.ResAmounts>{calcRes.tax.toFixed(2)}</S.ResAmounts>
+              </S.ResContainer>
               <br />
-              <ResContainer as="strong">
+              <S.ResContainer as="strong">
                 MyBenefit:{" "}
-                <ResAmounts>{toFixed(calcRes.myBenefit)}zl</ResAmounts>
-              </ResContainer>
-              <ResContainer as="strong">
+                <S.ResAmounts>{calcRes.myBenefit.toFixed(2)}zl</S.ResAmounts>
+              </S.ResContainer>
+              <S.ResContainer as="strong">
                 Netto zl:{" "}
-                <ResAmounts>
-                  {toFixed(calcRes.net - calcRes.multisportToMinus)}zl
-                </ResAmounts>
-              </ResContainer>
-              <ResContainer as="strong">
+                <S.ResAmounts>
+                  {(calcRes.net - calcRes.multisportToMinus).toFixed(2)}zl
+                </S.ResAmounts>
+              </S.ResContainer>
+              <S.ResContainer as="strong">
                 Netto USD:{" "}
-                <ResAmounts>
-                  {toFixed((calcRes.net - calcRes.multisportToMinus) / usd)}$
-                </ResAmounts>
-              </ResContainer>
+                <S.ResAmounts>
+                  {((calcRes.net - calcRes.multisportToMinus) / usd).toFixed(2)}
+                  $
+                </S.ResAmounts>
+              </S.ResContainer>
               <br />
-              <ResContainer as="strong">
+              <S.ResContainer as="strong">
                 TIP:{" "}
-                <ResAmounts>
-                  <span>1USD = ${usd}zl</span>
-                </ResAmounts>
-              </ResContainer>
-            </Results>
+                <S.ResAmounts>
+                  <span>1USD = {usd}zl</span>
+                </S.ResAmounts>
+              </S.ResContainer>
+            </S.Results>
           ) : (
             <div style={{ position: "relative" }}>
               <h2>Press Submit to see results</h2>
-              <USDzl>{usd ? `1$ = ${usd}zl` : "Loading..."}</USDzl>
+              <S.USDzl>{usd ? `1$ = ${usd}zl` : "Loading..."}</S.USDzl>
               <StaticImage
                 src={`../images/icon.png`}
                 objectFit="contain"
@@ -283,7 +148,14 @@ const IndexPage = () => {
               />
             </div>
           )}
-        </FormWrapper>
+          <a
+            href="https://cors-anywhere.herokuapp.com/corsdemo"
+            target="_blank"
+            rel="noopener"
+          >
+            fix cors if no exchange rate
+          </a>
+        </S.FormWrapper>
         <StaticImage
           src={`../images/solution.png`}
           objectFit="contain"
@@ -292,8 +164,8 @@ const IndexPage = () => {
           placeholder="tracedSVG"
           quality={100}
         />
-      </Container>
-    </main>
+      </S.Container>
+    </S.PageStyles>
   );
 };
 
