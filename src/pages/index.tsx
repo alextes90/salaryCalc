@@ -159,7 +159,7 @@ const IndexPage = () => {
             target="_blank"
             rel="noopener"
           >
-            fix cors if no exchange rate
+            if no exchange rate - press link and press button there
           </a>
         </S.FormWrapper>
         <StaticImage
