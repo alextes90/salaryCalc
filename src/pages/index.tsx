@@ -2,7 +2,7 @@ import { StaticImage } from "gatsby-plugin-image";
 import * as S from "../styled";
 import React, { FormEvent, useEffect, useState } from "react";
 import "../index.css";
-import { net, Res } from "../utils";
+import { net, parseInputValue, Res } from "../utils";
 import { SEO } from "../components/SEO";
 
 interface ResState extends Res {
@@ -11,9 +11,9 @@ interface ResState extends Res {
 }
 
 const IndexPage = () => {
-  const [gross, setGross] = useState(10000);
-  const [tax, setTax] = useState(17);
-  const [multisport, setMultisport] = useState(118);
+  const [gross, setGross] = useState("10000");
+  const [tax, setTax] = useState("17");
+  const [multisport, setMultisport] = useState("118");
   const [usd, setUsd] = useState(0);
   const [calcRes, setCalcRes] = useState<ResState | null>(null);
 
@@ -26,8 +26,8 @@ const IndexPage = () => {
       tax < 0
     )
       return alert("Gross and Tax should be a positive numbers!");
-    const myBenefit = 100 - multisport > 0 ? 100 - multisport : 0;
-    const multisportToMinus = multisport < 100 ? 0 : multisport - 100;
+    const myBenefit = 100 - +multisport > 0 ? 100 - +multisport : 0;
+    const multisportToMinus = +multisport < 100 ? 0 : +multisport - 100;
     setCalcRes({ ...net(gross, tax), myBenefit, multisportToMinus });
   };
   // https://cors-anywhere.herokuapp.com/
@@ -65,10 +65,13 @@ const IndexPage = () => {
             <S.Label>
               Salary gross:
               <S.InputField
-                type="number"
+                type="text"
                 name="gross"
+                required
                 value={gross}
-                onChange={(e) => setGross(+e.target.value)}
+                onChange={(e) =>
+                  setGross(parseInputValue(e.target.value, gross))
+                }
               />
             </S.Label>
             <S.Label>
@@ -76,8 +79,9 @@ const IndexPage = () => {
               <S.InputField
                 type="text"
                 name="tax"
+                required
                 value={tax}
-                onChange={(e) => setTax(+e.target.value)}
+                onChange={(e) => setTax(parseInputValue(e.target.value, tax))}
               />
             </S.Label>
             <S.Label>
@@ -86,7 +90,9 @@ const IndexPage = () => {
                 type="text"
                 name="sport"
                 value={multisport}
-                onChange={(e) => setMultisport(+e.target.value)}
+                onChange={(e) =>
+                  setMultisport(parseInputValue(e.target.value, multisport))
+                }
               />
             </S.Label>
             <S.Button type="submit">Submit</S.Button>

@@ -47,3 +47,9 @@ export const net = (gross: number, tax_rate = 17) => {
   res.net = actual_gross - zus - health_insurance - taxation - bonus;
   return res; // bonus comes indirectly
 };
+
+export const parseInputValue = (val: string, currVal: string) => {
+  if (val === "") return "0";
+  if (/^\d+$/.test(val)) return Number(val).toString();
+  return currVal;
+};
