@@ -19,16 +19,11 @@ const IndexPage = () => {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (
-      typeof gross !== "number" ||
-      typeof tax !== "number" ||
-      gross < 0 ||
-      tax < 0
-    )
+    if (+gross < 0 || +tax < 0)
       return alert("Gross and Tax should be a positive numbers!");
     const myBenefit = 100 - +multisport > 0 ? 100 - +multisport : 0;
     const multisportToMinus = +multisport < 100 ? 0 : +multisport - 100;
-    setCalcRes({ ...net(gross, tax), myBenefit, multisportToMinus });
+    setCalcRes({ ...net(+gross, +tax), myBenefit, multisportToMinus });
   };
   // https://cors-anywhere.herokuapp.com/
   useEffect(() => {
