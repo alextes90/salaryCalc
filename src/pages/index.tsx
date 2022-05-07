@@ -96,7 +96,7 @@ const IndexPage = () => {
             <S.Results>
               <S.ResContainer>
                 <S.ResLabels>ZUS: </S.ResLabels>
-                <S.ResAmounts>{calcRes.zus}zl</S.ResAmounts>
+                <S.ResAmounts>{calcRes.zus.toFixed(2)}zl</S.ResAmounts>
               </S.ResContainer>
               <S.ResContainer>
                 <S.ResLabels>Health insurance: </S.ResLabels>
