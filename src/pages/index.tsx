@@ -8,44 +8,9 @@ import React, {
   useState,
 } from "react";
 import "../index.css";
-import { net, parseInputValue, Res } from "../utils";
+import { net, parseInputValue, recursion, Res } from "../utils";
 import { SEO } from "../components/SEO";
-
-const recursia = (a: RefObject<HTMLSpanElement>, b: number) => {
-  const aValue = +a.current!.innerText;
-  if (aValue < b) {
-    if (b - aValue <= 0.1 && b - aValue > 0) {
-      a.current!.innerText = (aValue + 0.01).toFixed(2);
-    } else if (b - aValue <= 1 && b - aValue >= 0.1) {
-      a.current!.innerText = (aValue + 0.1).toFixed(2);
-    } else if (b - aValue <= 10 && b - aValue >= 1) {
-      a.current!.innerText = (aValue + 1).toFixed(2);
-    } else if (b - aValue <= 100 && b - aValue >= 10) {
-      a.current!.innerText = (aValue + 10).toFixed(2);
-    } else if (b - aValue <= 1000 && b - aValue >= 100) {
-      a.current!.innerText = (aValue + 100).toFixed(2);
-    } else if (b - aValue > 1000) {
-      a.current!.innerText = (aValue + 1000).toFixed(2);
-    }
-    if (aValue >= b) return;
-  } else {
-    if (aValue - b <= 0.1 && aValue - b > 0) {
-      a.current!.innerText = (aValue - 0.01).toFixed(2);
-    } else if (aValue - b <= 1 && aValue - b >= 0.1) {
-      a.current!.innerText = (aValue - 0.1).toFixed(2);
-    } else if (aValue - b <= 10 && aValue - b >= 1) {
-      a.current!.innerText = (aValue - 1).toFixed(2);
-    } else if (aValue - b <= 100 && aValue - b >= 10) {
-      a.current!.innerText = (aValue - 10).toFixed(2);
-    } else if (aValue - b <= 1000 && aValue - b >= 100) {
-      a.current!.innerText = (aValue - 100).toFixed(2);
-    } else if (aValue - b > 1000) {
-      a.current!.innerText = (aValue - 1000).toFixed(2);
-    }
-    if (aValue <= b) return;
-  }
-  setTimeout(() => recursia(a, b), 25);
-};
+import { EXCHANGE_RATE_API } from "../appConstants";
 
 interface ResState extends Res {
   myBenefit: number;
@@ -81,13 +46,10 @@ const IndexPage = () => {
       formData.append("c_amount", "1");
       formData.append("c_currency", "USD");
       try {
-        const rawResponse = await fetch(
-          "https://cors-anywhere.herokuapp.com/https://www.centkantor.pl/scripts/calc.php?type=calc",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
+        const rawResponse = await fetch(EXCHANGE_RATE_API, {
+          method: "POST",
+          body: formData,
+        });
         const content = await rawResponse.json();
         setUsd(content.value);
       } catch (e) {
@@ -107,12 +69,12 @@ const IndexPage = () => {
       const netto = (calcRes.net - calcRes.multisportToMinus).toFixed(2);
       const tax = calcRes.tax.toFixed(2);
       const health = calcRes.healthInsurance.toFixed(2);
-      recursia(usdNettoRef, +normalisedUsdNetto);
-      recursia(zusRef, +ZUS);
-      recursia(benefitRef, +benefit);
-      recursia(nettoRef, +netto);
-      recursia(taxRef, +tax);
-      recursia(healthRef, +health);
+      recursion(usdNettoRef, +normalisedUsdNetto);
+      recursion(zusRef, +ZUS);
+      recursion(benefitRef, +benefit);
+      recursion(nettoRef, +netto);
+      recursion(taxRef, +tax);
+      recursion(healthRef, +health);
     }
   }, [calcRes]);
 
