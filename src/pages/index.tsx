@@ -76,7 +76,7 @@ const IndexPage = () => {
       recursion(taxRef, +tax);
       recursion(healthRef, +health);
     }
-  }, [calcRes]);
+  }, [calcRes, usd]);
 
   return (
     <S.PageStyles>
