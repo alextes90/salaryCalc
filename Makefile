@@ -1,4 +1,4 @@
 d:
-	npm run develop
+	yarn develop
 c:
-	npm run clean
+	yarn clean
