@@ -8188,7 +8188,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gatsby-plugin-styled-components@npm:^5.13.0":
+"gatsby-plugin-styled-components@npm:^5.14.0":
   version: 5.14.0
   resolution: "gatsby-plugin-styled-components@npm:5.14.0"
   dependencies:
@@ -10074,7 +10074,7 @@ __metadata:
     gatsby-plugin-react-helmet: ^5.14.0
     gatsby-plugin-sharp: ^4.14.1
     gatsby-plugin-sitemap: ^5.14.0
-    gatsby-plugin-styled-components: ^5.13.0
+    gatsby-plugin-styled-components: ^5.14.0
     gatsby-source-filesystem: ^4.14.0
     gatsby-transformer-remark: ^5.14.0
     gatsby-transformer-sharp: ^4.14.0
