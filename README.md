@@ -7,6 +7,7 @@
   Gatsby minimal TypeScript starter
 </h1>
 
+### yarn upgrade-interactive <--- to upgrade all packages in interactive mode
 ## 🚀 Quick start
 
 1.  **Create a Gatsby site.**
