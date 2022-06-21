@@ -1,9 +1,7 @@
 # ItechArt Salary Calculator
-
 ### yarn upgrade-interactive <--- to upgrade all packages in interactive mode
-## 🚀 Quick start  
-## Required tools
 
+## Required tools
 
 To run the project correctly you will need to have installed **make** and **yarn**.
 
