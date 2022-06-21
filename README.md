@@ -1,55 +1,93 @@
-<p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby minimal TypeScript starter
-</h1>
+# ItechArt Salary Calculator
 
 ### yarn upgrade-interactive <--- to upgrade all packages in interactive mode
-## 🚀 Quick start
+## 🚀 Quick start  
+## Required tools
 
-1.  **Create a Gatsby site.**
 
-    Use the Gatsby CLI to create a new site, specifying the minimal TypeScript starter.
+To run the project correctly you will need to have installed **make** and **yarn**.
 
-    ```shell
-    # create a new Gatsby site using the minimal TypeScript starter
-    npm init gatsby
-    ```
+##### Installing Yarn
 
-2.  **Start developing.**
+The most recommended way to install **yarn** is through npm package manager. To do so, run:
 
-    Navigate into your new site’s directory and start it up.
+```
+npm install --global yarn
+```
 
-    ```shell
-    cd my-gatsby-site/
-    npm run develop
-    ```
+Then check if **yarn** is installed by running:
 
-3.  **Open the code and start customizing!**
+```
+yarn --version
+```
 
-    Your site is now running at http://localhost:8000!
+Alternative ways of installation **yarn** are available [here](https://classic.yarnpkg.com/lang/en/docs/install/).
 
-    Edit `src/pages/index.tsx` to see your site update in real-time!
+##### Installing Make on Windows
 
-4.  **Learn more**
+The most common way to have **make** available on Windows is by using [Chocolatey](https://chocolatey.org/install). Installation is simple and intuitive.
 
-    - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
+Once the **Chocolatey** is installed open powershell as administrator and run:
 
-    - [Tutorials](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
+```
+choco install make
+```
 
-    - [Guides](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
+> Note that restart of system or IDE may be required.
 
-    - [API Reference](https://www.gatsbyjs.com/docs/api-reference/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
+##### Installing Make on Mac
 
-    - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
+**Make** can be installed using **Homebrew** package manager.
 
-    - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
+```
+brew install gcc
+brew install make
+```
 
-## 🚀 Quick start (Gatsby Cloud)
+##### Installing Make on Linux
 
-Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cloud/):
+**Make** command comes preinstalled in most Linux distros. If **make** command cannot be found try running:
 
-[<img src="https://www.gatsbyjs.com/deploynow.svg" alt="Deploy to Gatsby Cloud">](https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-minimal-ts)
+```
+sudo apt-get update
+sudo apt-get install -y make
+```
+
+In case it didn't work try running:
+
+```
+sudo apt-get update
+sudo apt install build-essential
+```
+
+## Getting started
+
+Clone the repository:
+
+```
+git clone git@github.com:MadaShindeInai/salaryCalc.git
+```
+
+Navigate to the project and create a new branch:
+
+```
+cd ./salaryCalc && git checkout -b branch-name
+```
+
+Being in project root directory install dependencies:
+
+```
+yarn
+```
+
+To start the application run:
+
+```
+make d
+```
+
+To build production version of the application run:
+
+```
+make b
+```
