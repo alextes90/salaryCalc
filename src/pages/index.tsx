@@ -45,6 +45,8 @@ const IndexPage = () => {
       formData.append("c_type", "sell");
       formData.append("c_amount", "1");
       formData.append("c_currency", "USD");
+      formData.append("c_name", "");
+      formData.append("c_phone", "");
       try {
         const rawResponse = await fetch(EXCHANGE_RATE_API, {
           method: "POST",
@@ -77,7 +79,6 @@ const IndexPage = () => {
       recursion(healthRef, +health);
     }
   }, [calcRes, usd]);
-
   return (
     <S.PageStyles>
       <SEO title="SalaryCalc" />
@@ -93,9 +94,7 @@ const IndexPage = () => {
                 name="gross"
                 required
                 value={gross}
-                onChange={(e) =>
-                  setGross(parseInputValue(e.target.value, gross))
-                }
+                onChange={e => setGross(parseInputValue(e.target.value, gross))}
               />
             </S.Label>
             <S.Label>
@@ -105,7 +104,7 @@ const IndexPage = () => {
                 name="tax"
                 required
                 value={tax}
-                onChange={(e) => setTax(parseInputValue(e.target.value, tax))}
+                onChange={e => setTax(parseInputValue(e.target.value, tax))}
               />
             </S.Label>
             <S.Label>
@@ -114,7 +113,7 @@ const IndexPage = () => {
                 type="text"
                 name="sport"
                 value={multisport}
-                onChange={(e) =>
+                onChange={e =>
                   setMultisport(parseInputValue(e.target.value, multisport))
                 }
               />
