@@ -1,17 +1,11 @@
-import { StaticImage } from "gatsby-plugin-image";
-import * as S from "../styled";
-import axios from "axios";
-import React, {
-  FormEvent,
-  RefObject,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
 import "../index.css";
-import { net, parseInputValue, recursion, Res } from "../utils";
+import axios from "axios";
+import * as S from "../styled";
 import { SEO } from "../components/SEO";
+import { StaticImage } from "gatsby-plugin-image";
 import { EXCHANGE_RATE_API } from "../appConstants";
+import { net, parseInputValue, recursion, Res } from "../utils";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 
 interface ResState extends Res {
   myBenefit: number;
@@ -47,7 +41,6 @@ const IndexPage = () => {
     const multisportToMinus = +multisport < 100 ? 0 : +multisport - 100;
     setCalcRes({ ...net(+gross, +tax), myBenefit, multisportToMinus });
   };
-  // https://cors-anywhere.herokuapp.com/
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -187,26 +180,6 @@ const IndexPage = () => {
               />
             </div>
           )}
-          <a
-            href="https://cors-anywhere.herokuapp.com/corsdemo"
-            target="_blank"
-            rel="noopener"
-            style={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            press
-            <StaticImage
-              src={`../images/btn.png`}
-              alt="btn"
-              style={{ margin: "5px" }}
-              width={170}
-              placeholder="tracedSVG"
-              quality={100}
-            />
-            if no exchange rate
-          </a>
         </S.FormWrapper>
         <StaticImage
           src={`../images/solution.png`}
