@@ -1,17 +1,6 @@
 import type { GatsbyConfig } from "gatsby";
-import { createProxyMiddleware } from "http-proxy-middleware";
 
 const config: GatsbyConfig = {
-  developMiddleware: app => {
-    app.use(
-      "/scripts",
-      createProxyMiddleware({
-        target: "https://www.centkantor.pl",
-        changeOrigin: true,
-        secure: false,
-      })
-    );
-  },
   siteMetadata: {
     title: `Salary Calc`,
     description: "calc your netto by UOP",

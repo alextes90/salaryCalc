@@ -1,5 +1,6 @@
 import { StaticImage } from "gatsby-plugin-image";
 import * as S from "../styled";
+import axios from "axios";
 import React, {
   FormEvent,
   RefObject,
@@ -15,6 +16,14 @@ import { EXCHANGE_RATE_API } from "../appConstants";
 interface ResState extends Res {
   myBenefit: number;
   multisportToMinus: number;
+}
+
+interface ExchangeResponse {
+  data: {
+    status: number;
+    amount: number;
+    value: string;
+  };
 }
 
 const IndexPage = () => {
@@ -41,19 +50,14 @@ const IndexPage = () => {
   // https://cors-anywhere.herokuapp.com/
   useEffect(() => {
     const fetchCourse = async () => {
-      const formData = new FormData();
-      formData.append("c_type", "sell");
-      formData.append("c_amount", "1");
-      formData.append("c_currency", "USD");
-      formData.append("c_name", "");
-      formData.append("c_phone", "");
       try {
-        const rawResponse = await fetch(EXCHANGE_RATE_API, {
-          method: "POST",
-          body: formData,
+        const params = new URLSearchParams();
+        params.append("currency", "USD");
+        params.append("value", "1");
+        const { data }: ExchangeResponse = await axios.get(EXCHANGE_RATE_API, {
+          params,
         });
-        const content = await rawResponse.json();
-        setUsd(content.value);
+        setUsd(Number(data.value));
       } catch (e) {
         console.log(e);
       }
