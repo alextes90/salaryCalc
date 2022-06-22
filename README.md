@@ -1,4 +1,5 @@
 # ItechArt Salary Calculator
+### yarn upgrade-interactive <--- to upgrade all packages in interactive mode
 
 ## Required tools
 
