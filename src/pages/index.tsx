@@ -116,32 +116,32 @@ const IndexPage = () => {
               <S.ResContainer>
                 <S.ResLabels>ZUS: </S.ResLabels>
                 <S.ResAmounts>
-                  <span ref={zusRef}>0</span>zl
+                  <span ref={zusRef}>0</span>zł
                 </S.ResAmounts>
               </S.ResContainer>
               <S.ResContainer>
                 <S.ResLabels>Health insurance: </S.ResLabels>
                 <S.ResAmounts>
-                  <span ref={healthRef}></span>zl
+                  <span ref={healthRef}></span>zł
                 </S.ResAmounts>
               </S.ResContainer>
               <S.ResContainer>
                 <S.ResLabels>Tax: </S.ResLabels>
                 <S.ResAmounts>
-                  <span ref={taxRef}>0</span>zl
+                  <span ref={taxRef}>0</span>zł
                 </S.ResAmounts>
               </S.ResContainer>
               <br />
               <S.ResContainer as="strong">
                 MyBenefit:{" "}
                 <S.ResAmounts>
-                  <span ref={benefitRef}>0</span>zl
+                  <span ref={benefitRef}>0</span>zł
                 </S.ResAmounts>
               </S.ResContainer>
               <S.ResContainer as="strong">
                 Netto zl:{" "}
                 <S.ResAmounts>
-                  <span ref={nettoRef}>0</span>zl
+                  <span ref={nettoRef}>0</span>zł
                 </S.ResAmounts>
               </S.ResContainer>
               <S.ResContainer as="strong">
@@ -155,14 +155,16 @@ const IndexPage = () => {
               <S.ResContainer as="strong">
                 TIP:{" "}
                 <S.ResAmounts>
-                  <span>1USD = {usd ? usd : "🤷"}zl</span>
+                  <span>1USD = {usd ? usd.toFixed(2) : "🤷"}zł</span>
                 </S.ResAmounts>
               </S.ResContainer>
             </S.Results>
           ) : (
             <div style={{ position: "relative" }}>
               <h2>Press Submit to see results</h2>
-              <S.USDzl>{usd ? `1$ = ${usd}zl` : "Loading..."}</S.USDzl>
+              <S.USDzl>
+                {usd ? `1$ = ${usd.toFixed(2)}zł` : "Loading..."}
+              </S.USDzl>
               <StaticImage
                 src={`../images/icon.png`}
                 objectFit="contain"
