@@ -1,20 +1,20 @@
-import { StaticImage } from "gatsby-plugin-image";
-import * as S from "../styled";
-import React, {
-  FormEvent,
-  RefObject,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
 import "../index.css";
-import { net, parseInputValue, recursion, Res } from "../utils";
+import * as S from "../styled";
 import { SEO } from "../components/SEO";
+import { StaticImage } from "gatsby-plugin-image";
 import { EXCHANGE_RATE_API } from "../appConstants";
+import { net, parseInputValue, recursion, Res } from "../utils";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 
 interface ResState extends Res {
   myBenefit: number;
   multisportToMinus: number;
+}
+
+interface ExchangeResponse {
+  status: number;
+  amount: number;
+  value: string;
 }
 
 const IndexPage = () => {
@@ -38,20 +38,13 @@ const IndexPage = () => {
     const multisportToMinus = +multisport < 100 ? 0 : +multisport - 100;
     setCalcRes({ ...net(+gross, +tax), myBenefit, multisportToMinus });
   };
-  // https://cors-anywhere.herokuapp.com/
   useEffect(() => {
     const fetchCourse = async () => {
-      const formData = new FormData();
-      formData.append("c_type", "sell");
-      formData.append("c_amount", "1");
-      formData.append("c_currency", "USD");
       try {
-        const rawResponse = await fetch(EXCHANGE_RATE_API, {
-          method: "POST",
-          body: formData,
-        });
-        const content = await rawResponse.json();
-        setUsd(content.value);
+        const params = "currency=USD&value=1";
+        const response = await fetch(`${EXCHANGE_RATE_API}?${params}`);
+        const data: ExchangeResponse = await response.json();
+        setUsd(Number(data.value));
       } catch (e) {
         console.log(e);
       }
@@ -77,7 +70,6 @@ const IndexPage = () => {
       recursion(healthRef, +health);
     }
   }, [calcRes, usd]);
-
   return (
     <S.PageStyles>
       <SEO title="SalaryCalc" />
@@ -93,9 +85,7 @@ const IndexPage = () => {
                 name="gross"
                 required
                 value={gross}
-                onChange={(e) =>
-                  setGross(parseInputValue(e.target.value, gross))
-                }
+                onChange={e => setGross(parseInputValue(e.target.value, gross))}
               />
             </S.Label>
             <S.Label>
@@ -105,7 +95,7 @@ const IndexPage = () => {
                 name="tax"
                 required
                 value={tax}
-                onChange={(e) => setTax(parseInputValue(e.target.value, tax))}
+                onChange={e => setTax(parseInputValue(e.target.value, tax))}
               />
             </S.Label>
             <S.Label>
@@ -114,7 +104,7 @@ const IndexPage = () => {
                 type="text"
                 name="sport"
                 value={multisport}
-                onChange={(e) =>
+                onChange={e =>
                   setMultisport(parseInputValue(e.target.value, multisport))
                 }
               />
@@ -184,26 +174,6 @@ const IndexPage = () => {
               />
             </div>
           )}
-          <a
-            href="https://cors-anywhere.herokuapp.com/corsdemo"
-            target="_blank"
-            rel="noopener"
-            style={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            press
-            <StaticImage
-              src={`../images/btn.png`}
-              alt="btn"
-              style={{ margin: "5px" }}
-              width={170}
-              placeholder="tracedSVG"
-              quality={100}
-            />
-            if no exchange rate
-          </a>
         </S.FormWrapper>
         <StaticImage
           src={`../images/solution.png`}
