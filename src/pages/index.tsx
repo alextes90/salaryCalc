@@ -1,5 +1,4 @@
 import "../index.css";
-import axios from "axios";
 import * as S from "../styled";
 import { SEO } from "../components/SEO";
 import { StaticImage } from "gatsby-plugin-image";
@@ -13,11 +12,9 @@ interface ResState extends Res {
 }
 
 interface ExchangeResponse {
-  data: {
-    status: number;
-    amount: number;
-    value: string;
-  };
+  status: number;
+  amount: number;
+  value: string;
 }
 
 const IndexPage = () => {
@@ -44,12 +41,9 @@ const IndexPage = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const params = new URLSearchParams();
-        params.append("currency", "USD");
-        params.append("value", "1");
-        const { data }: ExchangeResponse = await axios.get(EXCHANGE_RATE_API, {
-          params,
-        });
+        const params = "currency=USD&value=1";
+        const response = await fetch(`${EXCHANGE_RATE_API}?${params}`);
+        const data: ExchangeResponse = await response.json();
         setUsd(Number(data.value));
       } catch (e) {
         console.log(e);
