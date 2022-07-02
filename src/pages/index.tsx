@@ -1,10 +1,10 @@
-import "../index.css";
-import * as S from "../styled";
-import { SEO } from "../components/SEO";
-import { StaticImage } from "gatsby-plugin-image";
-import { EXCHANGE_RATE_API } from "../appConstants";
-import { net, parseInputValue, recursion, Res } from "../utils";
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import '../index.css';
+import * as S from '../styled';
+import { SEO } from '../components/SEO';
+import { StaticImage } from 'gatsby-plugin-image';
+import { EXCHANGE_RATE_API } from '../appConstants';
+import { net, parseInputValue, recursion, Res } from '../utils';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 interface ResState extends Res {
   myBenefit: number;
@@ -18,9 +18,9 @@ interface ExchangeResponse {
 }
 
 const IndexPage = () => {
-  const [gross, setGross] = useState("10000");
-  const [tax, setTax] = useState("17");
-  const [multisport, setMultisport] = useState("118");
+  const [gross, setGross] = useState('10000');
+  const [tax, setTax] = useState('17');
+  const [multisport, setMultisport] = useState('118');
   const [usd, setUsd] = useState(0);
   const [calcRes, setCalcRes] = useState<ResState | null>(null);
   const usdNettoRef = useRef<HTMLSpanElement>(null);
@@ -29,11 +29,10 @@ const IndexPage = () => {
   const taxRef = useRef<HTMLSpanElement>(null);
   const nettoRef = useRef<HTMLSpanElement>(null);
   const benefitRef = useRef<HTMLSpanElement>(null);
-
+  // @ts-ignore
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (+gross < 0 || +tax < 0)
-      return alert("Gross and Tax should be a positive numbers!");
+    if (+gross < 0 || +tax < 0) return alert('Gross and Tax should be a positive numbers!');
     const myBenefit = 100 - +multisport > 0 ? 100 - +multisport : 0;
     const multisportToMinus = +multisport < 100 ? 0 : +multisport - 100;
     setCalcRes({ ...net(+gross, +tax), myBenefit, multisportToMinus });
@@ -41,7 +40,7 @@ const IndexPage = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const params = "currency=USD&value=1";
+        const params = 'currency=USD&value=1';
         const response = await fetch(`${EXCHANGE_RATE_API}?${params}`);
         const data: ExchangeResponse = await response.json();
         setUsd(Number(data.value));
@@ -55,7 +54,7 @@ const IndexPage = () => {
   useEffect(() => {
     if (calcRes) {
       const usdNetto = (calcRes.net - calcRes.multisportToMinus) / usd;
-      const normalisedUsdNetto = isFinite(usdNetto) ? usdNetto.toFixed(2) : "0";
+      const normalisedUsdNetto = isFinite(usdNetto) ? usdNetto.toFixed(2) : '0';
 
       const ZUS = calcRes.zus.toFixed(2);
       const benefit = calcRes.myBenefit.toFixed(2);
@@ -85,7 +84,7 @@ const IndexPage = () => {
                 name="gross"
                 required
                 value={gross}
-                onChange={e => setGross(parseInputValue(e.target.value, gross))}
+                onChange={(e) => setGross(parseInputValue(e.target.value, gross))}
               />
             </S.Label>
             <S.Label>
@@ -95,7 +94,7 @@ const IndexPage = () => {
                 name="tax"
                 required
                 value={tax}
-                onChange={e => setTax(parseInputValue(e.target.value, tax))}
+                onChange={(e) => setTax(parseInputValue(e.target.value, tax))}
               />
             </S.Label>
             <S.Label>
@@ -104,9 +103,7 @@ const IndexPage = () => {
                 type="text"
                 name="sport"
                 value={multisport}
-                onChange={e =>
-                  setMultisport(parseInputValue(e.target.value, multisport))
-                }
+                onChange={(e) => setMultisport(parseInputValue(e.target.value, multisport))}
               />
             </S.Label>
             <S.Button type="submit">Submit</S.Button>
@@ -133,13 +130,13 @@ const IndexPage = () => {
               </S.ResContainer>
               <br />
               <S.ResContainer as="strong">
-                MyBenefit:{" "}
+                MyBenefit:{' '}
                 <S.ResAmounts>
                   <span ref={benefitRef}>0</span>zł
                 </S.ResAmounts>
               </S.ResContainer>
               <S.ResContainer as="strong">
-                Netto zl:{" "}
+                Netto zl:{' '}
                 <S.ResAmounts>
                   <span ref={nettoRef}>0</span>zł
                 </S.ResAmounts>
@@ -148,23 +145,21 @@ const IndexPage = () => {
                 Netto USD:
                 <S.ResAmounts>
                   <span ref={usdNettoRef}>0</span>
-                  <span style={{ fontSize: "32px" }}>&#128176;</span>
+                  <span style={{ fontSize: '32px' }}>&#128176;</span>
                 </S.ResAmounts>
               </S.ResContainer>
               <br />
               <S.ResContainer as="strong">
-                TIP:{" "}
+                TIP:{' '}
                 <S.ResAmounts>
-                  <span>1USD = {usd ? usd.toFixed(2) : "🤷"}zł</span>
+                  <span>1USD = {usd ? usd.toFixed(2) : '🤷'}zł</span>
                 </S.ResAmounts>
               </S.ResContainer>
             </S.Results>
           ) : (
-            <div style={{ position: "relative" }}>
+            <div style={{ position: 'relative' }}>
               <h2>Press Submit to see results</h2>
-              <S.USDzl>
-                {usd ? `1$ = ${usd.toFixed(2)}zł` : "Loading..."}
-              </S.USDzl>
+              <S.USDzl>{usd ? `1$ = ${usd.toFixed(2)}zł` : 'Loading...'}</S.USDzl>
               <StaticImage
                 src={`../images/icon.png`}
                 objectFit="contain"

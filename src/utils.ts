@@ -1,4 +1,4 @@
-import { RefObject } from "react";
+import { RefObject } from 'react';
 
 export type Res = {
   gross: number;
@@ -26,9 +26,7 @@ export const net = (gross: number, tax_rate = 17) => {
   const sickness_insurance_rate = 0.0245;
   const zus =
     actual_gross *
-    (old_age_pension_contribution_rate +
-      disability_contribution_rate +
-      sickness_insurance_rate);
+    (old_age_pension_contribution_rate + disability_contribution_rate + sickness_insurance_rate);
   res.zus = zus;
   console.log(`ZUS: ${zus}`);
   // Health insurance
@@ -51,7 +49,7 @@ export const net = (gross: number, tax_rate = 17) => {
 };
 
 export const parseInputValue = (val: string, currVal: string) => {
-  if (val === "") return "0";
+  if (val === '') return '0';
   if (/^\d+$/.test(val)) return Number(val).toString();
   return currVal;
 };
