@@ -1,10 +1,10 @@
-import '../index.css';
-import * as S from '../styled';
-import { SEO } from '../components/SEO';
-import { StaticImage } from 'gatsby-plugin-image';
-import { EXCHANGE_RATE_API } from '../appConstants';
-import { net, parseInputValue, recursion, Res } from '../utils';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import * as S from '../styled';
+import { SEO } from 'components';
+import { StaticImage } from 'gatsby-plugin-image';
+import { EXCHANGE_RATE_API } from 'appConstants';
+import { net, parseInputValue, recursion, Res } from 'utils';
+import '../index.css';
 
 interface ResState extends Res {
   myBenefit: number;
