@@ -1,6 +1,6 @@
-import React, { FC } from "react";
-import { Helmet } from "react-helmet";
-import { useStaticQuery, graphql } from "gatsby";
+import React, { FC } from 'react';
+import { Helmet } from 'react-helmet';
+import { useStaticQuery, graphql } from 'gatsby';
 
 type Meta = ConcatArray<PropertyMetaObj | NameMetaObj>;
 
@@ -31,12 +31,7 @@ type Props = {
   title: string;
 };
 
-export const SEO: FC<Props> = ({
-  description = "",
-  lang = "en",
-  meta = [],
-  title,
-}) => {
+export const SEO: FC<Props> = ({ description = '', lang = 'en', meta = [], title }) => {
   const { site } = useStaticQuery<QueryTypes>(SEOStaticQuery);
 
   const metaDescription = description || site.siteMetadata.description;

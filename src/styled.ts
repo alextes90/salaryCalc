@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ export const FormWrapper = styled.div``;
 export const PageStyles = styled.main`
   color: #232129;
   padding: 20px 40px;
-  font-family: "-apple-system, Roboto, sans-serif, serif";
+  font-family: '-apple-system, Roboto, sans-serif, serif';
 `;
 
 export const HeadingStyles = styled.h1`
@@ -97,7 +97,7 @@ export const Button = styled.button`
   -webkit-user-select: none;
   touch-action: manipulation;
   &:before {
-    content: "";
+    content: '';
     background: linear-gradient(
       45deg,
       #ff0000,
@@ -125,7 +125,7 @@ export const Button = styled.button`
   }
   &:after {
     z-index: -1;
-    content: "";
+    content: '';
     position: absolute;
     width: 100%;
     height: 100%;

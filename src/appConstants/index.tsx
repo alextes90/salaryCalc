@@ -1,1 +1,1 @@
-export const EXCHANGE_RATE_API = "https://basic-exchanger.herokuapp.com";
+export const EXCHANGE_RATE_API = 'https://basic-exchanger.herokuapp.com';
