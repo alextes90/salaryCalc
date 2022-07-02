@@ -29,7 +29,7 @@ const IndexPage = () => {
   const taxRef = useRef<HTMLSpanElement>(null);
   const nettoRef = useRef<HTMLSpanElement>(null);
   const benefitRef = useRef<HTMLSpanElement>(null);
-  // @ts-ignore
+
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (+gross < 0 || +tax < 0) return alert('Gross and Tax should be a positive numbers!');
