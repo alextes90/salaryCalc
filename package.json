@@ -14,8 +14,8 @@
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "typecheck": "tsc --noEmit",
-    "lint:eslint": "eslint 'src/**/*.{js,ts,tsx}'",
-    "lint:prettier": "prettier --check 'src/**/*.{js,ts,tsx}'",
+    "lint:eslint": "eslint \"src/**/*.{js,ts,tsx}\"",
+    "lint:prettier": "prettier --check \"src/**/*.{js,ts,tsx}\"",
     "fix:prettier": "prettier --write 'src/**/*.{js,ts,tsx}'",
     "fix:eslint": "eslint --fix 'src/**/*.{js,ts,tsx}'",
     "prepare": "husky install",
@@ -23,8 +23,8 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
-      "npm run lint:eslint",
-      "npm run lint:prettier"
+      "yarn run lint:eslint",
+      "yarn run lint:prettier"
     ]
   },
   "dependencies": {
