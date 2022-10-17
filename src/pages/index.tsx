@@ -1,10 +1,16 @@
-import React, { useEffect, useState, useReducer } from 'react';
+import React, { useEffect, useState, useReducer, useRef } from 'react';
 import { SEO, Form, Results } from 'components';
 import { EXCHANGE_RATE_API } from 'appConstants';
 import { calculateNetSalary, calculateInDolars } from 'utils';
 import { Box, Typography, Grid } from '@mui/material';
 import { FormState, Salary } from 'types';
-import { appContainerStyle, headerStyle } from 'styled';
+import { appContainerStyle, headerStyle, tiltAnimationStyle } from 'styled';
+import piggy from 'components/animation/anim.json';
+import { useAnimation } from 'hooks/useAnimation';
+import {
+  bootstrapPiggyAnimation,
+  continuePiggyAnimation,
+} from 'components/animation/animationUtils';
 
 type ExchangeResponse = {
   status: number;
@@ -32,6 +38,9 @@ const IndexPage = () => {
   const [usdCourse, setUsdCourse] = useState<number>();
   const [calculatedSalary, setCalculatedSalary] = useState<Salary>();
 
+  const { animation, AnimationContainer } = useAnimation({ animJson: piggy });
+  const unsubscribeLoopPiggyAnimation = useRef<(() => void | undefined) | null>(null);
+
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -46,24 +55,36 @@ const IndexPage = () => {
     fetchCourse();
   }, []);
 
+  useEffect(() => {
+    unsubscribeLoopPiggyAnimation.current = bootstrapPiggyAnimation(animation);
+  }, [animation]);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    unsubscribeLoopPiggyAnimation.current && unsubscribeLoopPiggyAnimation.current();
     const salary = calculateNetSalary(formState);
-    setCalculatedSalary(salary);
+    continuePiggyAnimation(animation, () => {
+      setCalculatedSalary(salary);
+    });
   };
+
+  const usdSalaryString = !!usdCourse
+    ? ` ($${calculateInDolars(calculatedSalary?.net, usdCourse)})`
+    : '';
 
   return (
     <Box sx={appContainerStyle}>
       <SEO title="SalaryCalc" />
       <Box sx={headerStyle}>
-        <Typography variant="h5" align="center">
-          {calculatedSalary
-            ? `Your net salary: ${calculatedSalary?.net}zł ($${calculateInDolars(
-                calculatedSalary?.net,
-                usdCourse
-              )})`
-            : 'Submit form to calculate salary'}
-        </Typography>
+        {calculatedSalary ? (
+          <Typography sx={tiltAnimationStyle} variant="h5" align="center">
+            Your net salary: ${calculatedSalary?.net}zł {usdSalaryString}
+          </Typography>
+        ) : (
+          <Typography variant="h5" align="center">
+            Submit form to calculate salary
+          </Typography>
+        )}
         <Typography variant="subtitle2" align="center">
           Current USD Course: $1.00 = {usdCourse?.toFixed(2)}zł
         </Typography>
@@ -73,7 +94,7 @@ const IndexPage = () => {
           <Form values={formState} dispatch={dispatchForm} onSubmit={handleSubmit} />
         </Grid>
         <Grid item xs={10} sm={6}>
-          <Results salary={calculatedSalary} />
+          <Results salary={calculatedSalary} PiggyAnim={AnimationContainer} />
         </Grid>
       </Grid>
     </Box>
