@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { formContainerStyle } from 'styled';
 import { FormState, LuxmedType, MultiSportType, PpkType } from 'types';
 import {
@@ -10,7 +10,11 @@ import {
   Radio,
   FormControlLabel,
   Box,
+  useMediaQuery,
+  Switch,
+  Collapse,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { CustomSelect } from 'components/form/Select';
 import { luxmedItems, multisportItems, taxRateItems } from 'appConstants';
 
@@ -21,9 +25,25 @@ type Props = {
 };
 
 export const Form = ({ values, dispatch, onSubmit }: Props) => {
+  const theme = useTheme();
+  const mqMatches = useMediaQuery(theme.breakpoints.down('sm'));
+  const [isAdvanced, setIsAdvanced] = useState(true);
+
+  useEffect(() => {
+    setIsAdvanced(!mqMatches);
+  }, [mqMatches]);
+
+  const handleChange = () => {
+    setIsAdvanced((prev) => !prev);
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <Box sx={formContainerStyle}>
+        <FormControlLabel
+          label="Show advanced options"
+          control={<Switch checked={isAdvanced} onChange={handleChange} />}
+        />
         <TextField
           required
           id="salary-gross"
@@ -46,40 +66,44 @@ export const Form = ({ values, dispatch, onSubmit }: Props) => {
           items={taxRateItems}
           label="Tax rate"
         />
-        <CustomSelect
-          id="my-multisport"
-          value={values.myMultisport}
-          onChange={(e) => dispatch({ myMultisport: e.target.value as MultiSportType })}
-          items={multisportItems}
-          label="My Multisport"
-        />
-        <CustomSelect
-          id="parent-multisport"
-          value={values.partnerMultisport}
-          onChange={(e) => dispatch({ partnerMultisport: e.target.value as MultiSportType })}
-          items={multisportItems}
-          label="Partner Multisport"
-        />
-        <CustomSelect
-          id="luxmed"
-          value={values.luxmed}
-          onChange={(e) => dispatch({ luxmed: e.target.value as LuxmedType })}
-          items={luxmedItems}
-          label="Luxmed Medical Package"
-        />
-        <FormControl required>
-          <FormLabel id="ppk-label">Do you use PPK?</FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="ppk-label"
-            name="ppk"
-            value={values.ppk}
-            onChange={(e) => dispatch({ ppk: e.target.value as PpkType })}
-          >
-            <FormControlLabel value="YES" control={<Radio />} label="Yes" />
-            <FormControlLabel value="NO" control={<Radio />} label="No" />
-          </RadioGroup>
-        </FormControl>
+        <Collapse in={isAdvanced}>
+          <Box sx={formContainerStyle}>
+            <CustomSelect
+              id="my-multisport"
+              value={values.myMultisport}
+              onChange={(e) => dispatch({ myMultisport: e.target.value as MultiSportType })}
+              items={multisportItems}
+              label="My Multisport"
+            />
+            <CustomSelect
+              id="parent-multisport"
+              value={values.partnerMultisport}
+              onChange={(e) => dispatch({ partnerMultisport: e.target.value as MultiSportType })}
+              items={multisportItems}
+              label="Partner Multisport"
+            />
+            <CustomSelect
+              id="luxmed"
+              value={values.luxmed}
+              onChange={(e) => dispatch({ luxmed: e.target.value as LuxmedType })}
+              items={luxmedItems}
+              label="Luxmed Medical Package"
+            />
+            <FormControl required>
+              <FormLabel id="ppk-label">Do you use PPK?</FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="ppk-label"
+                name="ppk"
+                value={values.ppk}
+                onChange={(e) => dispatch({ ppk: e.target.value as PpkType })}
+              >
+                <FormControlLabel value="YES" control={<Radio />} label="Yes" />
+                <FormControlLabel value="NO" control={<Radio />} label="No" />
+              </RadioGroup>
+            </FormControl>
+          </Box>
+        </Collapse>
         <Button type="submit" variant="outlined">
           Submit
         </Button>
