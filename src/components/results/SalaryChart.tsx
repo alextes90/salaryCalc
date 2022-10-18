@@ -1,13 +1,11 @@
 import React from 'react';
 import { Salary } from 'types';
 import { PieChart, Pie, ResponsiveContainer, Cell, Legend } from 'recharts';
+import { SALARY_CHART_COLORS, SALARY_CHART_CUSTOM_STYLE } from 'appConstants';
 
 type Props = {
   salary?: Salary;
 };
-
-const COLORS = ['#CB3F43', '#00C49F', '#FFBB28', '#0088FE', '#FF8042'];
-const CUSTOM_STYLE = { fontFamily: 'Roboto, sans-serif' };
 
 export const SalaryChart = ({ salary }: Props) => {
   const data = [
@@ -28,13 +26,16 @@ export const SalaryChart = ({ salary }: Props) => {
           label
           fill="#8884d8"
           dataKey="value"
-          style={CUSTOM_STYLE}
+          style={SALARY_CHART_CUSTOM_STYLE}
         >
           {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            <Cell
+              key={`cell-${index}`}
+              fill={SALARY_CHART_COLORS[index % SALARY_CHART_COLORS.length]}
+            />
           ))}
         </Pie>
-        <Legend wrapperStyle={CUSTOM_STYLE} />
+        <Legend wrapperStyle={SALARY_CHART_CUSTOM_STYLE} />
       </PieChart>
     </ResponsiveContainer>
   );

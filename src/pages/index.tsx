@@ -11,6 +11,8 @@ import {
   bootstrapPiggyAnimation,
   continuePiggyAnimation,
 } from 'components/animation/animationUtils';
+import { useAsync } from 'hooks/useAsync';
+import { client } from 'utils/apiClient';
 
 type ExchangeResponse = {
   status: number;
@@ -35,25 +37,17 @@ const IndexPage = () => {
     initialFormValues
   );
 
-  const [usdCourse, setUsdCourse] = useState<number>();
   const [calculatedSalary, setCalculatedSalary] = useState<Salary>();
 
   const { animation, AnimationContainer } = useAnimation({ animJson: piggy });
   const unsubscribeLoopPiggyAnimation = useRef<(() => void | undefined) | null>(null);
 
+  const { run, isPending, isError, data: usdCourse } = useAsync<ExchangeResponse>();
+
   useEffect(() => {
-    const fetchCourse = async () => {
-      try {
-        const params = 'currency=USD&value=1';
-        const response = await fetch(`${EXCHANGE_RATE_API}?${params}`);
-        const data: ExchangeResponse = await response.json();
-        setUsdCourse(Number(data.value));
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    fetchCourse();
-  }, []);
+    const params = 'currency=USD&value=1';
+    run(client<ExchangeResponse>(`${EXCHANGE_RATE_API}?${params}`));
+  }, [run]);
 
   useEffect(() => {
     unsubscribeLoopPiggyAnimation.current = bootstrapPiggyAnimation(animation);
@@ -68,9 +62,15 @@ const IndexPage = () => {
     });
   };
 
-  const usdSalaryString = !!usdCourse
-    ? ` ($${calculateInDolars(calculatedSalary?.net, usdCourse)})`
+  const usdSalaryStringFormat = !!usdCourse
+    ? ` ($${calculateInDolars(calculatedSalary?.net, +usdCourse?.value)})`
     : '';
+
+  const usdStringFormat = isPending
+    ? 'Loading...'
+    : isError
+    ? 'No data to show'
+    : `${Number(usdCourse?.value).toFixed(2)}zł`;
 
   return (
     <Box sx={appContainerStyle}>
@@ -78,7 +78,7 @@ const IndexPage = () => {
       <Box sx={headerStyle}>
         {calculatedSalary ? (
           <Typography sx={tiltAnimationStyle} variant="h5" align="center">
-            Your net salary: ${calculatedSalary?.net}zł {usdSalaryString}
+            Your net salary: ${calculatedSalary?.net}zł {usdSalaryStringFormat}
           </Typography>
         ) : (
           <Typography variant="h5" align="center">
@@ -86,7 +86,7 @@ const IndexPage = () => {
           </Typography>
         )}
         <Typography variant="subtitle2" align="center">
-          Current USD Course: $1.00 = {usdCourse?.toFixed(2)}zł
+          Current USD Course: $1.00 = {usdStringFormat}
         </Typography>
       </Box>
       <Grid container spacing={2} justifyContent="center">

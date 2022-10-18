@@ -54,3 +54,6 @@ export const luxmedItems: { name: string; value: LuxmedType }[] = [
   { name: 'Me and partner', value: 'PARTNER' },
   { name: 'Family', value: 'FAMILY' },
 ];
+
+export const SALARY_CHART_COLORS = ['#CB3F43', '#00C49F', '#FFBB28', '#0088FE', '#FF8042'];
+export const SALARY_CHART_CUSTOM_STYLE = { fontFamily: 'Roboto, sans-serif' };
