@@ -78,7 +78,7 @@ const IndexPage = () => {
       <Box sx={headerStyle}>
         {calculatedSalary ? (
           <Typography sx={tiltAnimationStyle} variant="h5" align="center">
-            Your net salary: ${calculatedSalary?.net}zł {usdSalaryStringFormat}
+            Your net salary: {calculatedSalary?.net}zł {usdSalaryStringFormat}
           </Typography>
         ) : (
           <Typography variant="h5" align="center">
