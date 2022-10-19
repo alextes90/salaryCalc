@@ -25,6 +25,7 @@ export const SalaryChart = ({ salary }: Props) => {
           cy="50%"
           label
           fill="#8884d8"
+          outerRadius="60%"
           dataKey="value"
           style={SALARY_CHART_CUSTOM_STYLE}
         >
