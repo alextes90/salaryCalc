@@ -1,52 +1,42 @@
-import * as React from 'react';
+import React from 'react';
 import { Link } from 'gatsby';
+import { Alert, Box, Typography, Button } from '@mui/material';
 
-// styles
 const pageStyles = {
-  color: '#232129',
-  padding: '96px',
-  fontFamily: '-apple-system, Roboto, sans-serif, serif',
-};
-const headingStyles = {
-  marginTop: 0,
-  marginBottom: 64,
-  maxWidth: 320,
+  height: '100vh',
 };
 
-const paragraphStyles = {
-  marginBottom: 48,
-};
-const codeStyles = {
-  color: '#8A6534',
-  padding: 4,
-  backgroundColor: '#FFF4DB',
-  fontSize: '1.25rem',
-  borderRadius: 4,
+const wrapperStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%',
 };
 
-// markup
+const alertStyle = {
+  padding: '2em',
+};
+
+const btnStyle = {
+  marginTop: '2em',
+};
+
 const NotFoundPage = () => {
   return (
     <main style={pageStyles}>
       <title>Not found</title>
-      <h1 style={headingStyles}>Page not found</h1>
-      <p style={paragraphStyles}>
-        Sorry{' '}
-        <span role="img" aria-label="Pensive emoji">
-          😔
-        </span>{' '}
-        we couldn’t find what you were looking for.
-        <br />
-        {process.env.NODE_ENV === 'development' ? (
-          <>
-            <br />
-            Try creating a page in <code style={codeStyles}>src/pages/</code>.
-            <br />
-          </>
-        ) : null}
-        <br />
-        <Link to="/">Go home</Link>.
-      </p>
+      <Box sx={wrapperStyle}>
+        <Alert severity="info" sx={alertStyle}>
+          <Typography variant="h4">Page not found</Typography>
+          <Typography variant="subtitle2">
+            Sorry we couldn’t find what you were looking for.
+          </Typography>
+
+          <Button component={Link} to="/" variant="contained" sx={btnStyle}>
+            Go back
+          </Button>
+        </Alert>
+      </Box>
     </main>
   );
 };
