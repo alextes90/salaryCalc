@@ -1,5 +1,5 @@
-import lottie, { AnimationItem } from 'lottie-web';
 import React from 'react';
+import lottie, { AnimationItem } from 'lottie-web';
 import { useEffect, useRef } from 'react';
 
 type Props = {

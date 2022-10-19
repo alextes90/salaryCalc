@@ -38,7 +38,7 @@ export const Form = ({ values, dispatch, onSubmit }: Props) => {
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} data-testid="salary-form">
       <Box sx={formContainerStyle}>
         <FormControlLabel
           label="Show advanced options"
@@ -66,7 +66,7 @@ export const Form = ({ values, dispatch, onSubmit }: Props) => {
           items={taxRateItems}
           label="Tax rate"
         />
-        <Collapse in={isAdvanced}>
+        <Collapse in={isAdvanced} data-testid="collapse-field">
           <Box sx={formContainerStyle}>
             <CustomSelect
               id="my-multisport"
