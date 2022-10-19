@@ -40,7 +40,7 @@ export const calculateNetSalary = ({
   const healthInsurance = roundToDoubleDigits(basisForHealthInsurance * HEALTH_CONTRIBUTION_RATE);
 
   const basisForTaxation = basisForHealthInsurance - INCOME_COSTS;
-  const taxation = roundToDoubleDigits((basisForTaxation * +tax) / 100 - TAX_RELIEF);
+  const taxation = Math.max(0, roundToDoubleDigits((basisForTaxation * +tax) / 100 - TAX_RELIEF));
 
   const ppkContribution = roundToDoubleDigits(grossWithBonuses * PPK[ppk]);
   const net = roundToDoubleDigits(+gross - zus - healthInsurance - taxation - ppkContribution);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Salary } from 'types';
 import { PieChart, Pie, ResponsiveContainer, Cell, Legend } from 'recharts';
-import { SALARY_CHART_COLORS, SALARY_CHART_CUSTOM_STYLE } from 'appConstants';
+import { SalaryChartColors, SALARY_CHART_CUSTOM_STYLE } from 'appConstants';
 
 type Props = {
   salary?: Salary;
@@ -9,11 +9,11 @@ type Props = {
 
 export const SalaryChart = ({ salary }: Props) => {
   const data = [
-    { name: 'Health insurance', value: salary?.healthInsurance },
-    { name: 'ZUS', value: salary?.zus },
-    { name: 'TAX', value: salary?.taxation },
-    { name: 'Net Salary', value: salary?.net },
-    { name: 'PPK', value: salary?.ppkContribution },
+    { name: 'Health insurance', value: salary?.healthInsurance, color: SalaryChartColors.hi },
+    { name: 'ZUS', value: salary?.zus, color: SalaryChartColors.zus },
+    { name: 'Net Salary', value: salary?.net, color: SalaryChartColors.net },
+    { name: 'TAX', value: salary?.taxation, color: SalaryChartColors.tax },
+    { name: 'PPK', value: salary?.ppkContribution, color: SalaryChartColors.ppk },
   ].filter((e) => e.value && e.value !== 0);
 
   return (
@@ -29,10 +29,7 @@ export const SalaryChart = ({ salary }: Props) => {
           style={SALARY_CHART_CUSTOM_STYLE}
         >
           {data.map((entry, index) => (
-            <Cell
-              key={`cell-${index}`}
-              fill={SALARY_CHART_COLORS[index % SALARY_CHART_COLORS.length]}
-            />
+            <Cell key={`cell-${index}`} fill={entry.color} />
           ))}
         </Pie>
         <Legend wrapperStyle={SALARY_CHART_CUSTOM_STYLE} />
