@@ -38,6 +38,7 @@ const IndexPage = () => {
   );
 
   const [calculatedSalary, setCalculatedSalary] = useState<Salary>();
+  const [isFormBlocked, setIsFormBlocked] = useState(false);
 
   const { animation, AnimationContainer } = useAnimation({ animJson: piggy });
   const unsubscribeLoopPiggyAnimation = useRef<(() => void | undefined) | null>(null);
@@ -53,6 +54,12 @@ const IndexPage = () => {
     unsubscribeLoopPiggyAnimation.current = bootstrapPiggyAnimation(animation);
   }, [animation]);
 
+  useEffect(() => {
+    if (isFormBlocked) {
+      setIsFormBlocked(false);
+    }
+  }, [formState]);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     unsubscribeLoopPiggyAnimation.current && unsubscribeLoopPiggyAnimation.current();
@@ -60,6 +67,7 @@ const IndexPage = () => {
     continuePiggyAnimation(animation, () => {
       setCalculatedSalary(salary);
     });
+    setIsFormBlocked(true);
   };
 
   const usdSalaryStringFormat = !!usdCourse
@@ -91,7 +99,12 @@ const IndexPage = () => {
       </Box>
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={10} sm={6}>
-          <Form values={formState} dispatch={dispatchForm} onSubmit={handleSubmit} />
+          <Form
+            values={formState}
+            dispatch={dispatchForm}
+            onSubmit={handleSubmit}
+            isFormBlocked={isFormBlocked}
+          />
         </Grid>
         <Grid item xs={10} sm={6}>
           <Results salary={calculatedSalary} PiggyAnim={AnimationContainer} />
