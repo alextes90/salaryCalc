@@ -38,8 +38,9 @@ const IndexPage = () => {
   );
 
   const [calculatedSalary, setCalculatedSalary] = useState<Salary>();
+  const [isFormBlocked, setIsFormBlocked] = useState(false);
 
-  const { animation, AnimationContainer } = useAnimation({ animJson: piggy });
+  const { animation, AnimationContainer, destroyAnimation } = useAnimation({ animJson: piggy });
   const unsubscribeLoopPiggyAnimation = useRef<(() => void | undefined) | null>(null);
 
   const { run, isPending, isError, data: usdCourse } = useAsync<ExchangeResponse>();
@@ -50,16 +51,31 @@ const IndexPage = () => {
   }, [run]);
 
   useEffect(() => {
+    if (!animation) return;
     unsubscribeLoopPiggyAnimation.current = bootstrapPiggyAnimation(animation);
   }, [animation]);
 
+  useEffect(() => {
+    if (isFormBlocked) {
+      setIsFormBlocked(false);
+    }
+  }, [formState]);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    unsubscribeLoopPiggyAnimation.current && unsubscribeLoopPiggyAnimation.current();
     const salary = calculateNetSalary(formState);
-    continuePiggyAnimation(animation, () => {
+    if (animation) {
+      unsubscribeLoopPiggyAnimation.current && unsubscribeLoopPiggyAnimation.current();
+
+      continuePiggyAnimation(animation, () => {
+        setCalculatedSalary(salary);
+        destroyAnimation();
+      });
+    } else {
       setCalculatedSalary(salary);
-    });
+    }
+
+    setIsFormBlocked(true);
   };
 
   const usdSalaryStringFormat = !!usdCourse
@@ -91,7 +107,12 @@ const IndexPage = () => {
       </Box>
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={10} sm={6}>
-          <Form values={formState} dispatch={dispatchForm} onSubmit={handleSubmit} />
+          <Form
+            values={formState}
+            dispatch={dispatchForm}
+            onSubmit={handleSubmit}
+            isFormBlocked={isFormBlocked}
+          />
         </Grid>
         <Grid item xs={10} sm={6}>
           <Results salary={calculatedSalary} PiggyAnim={AnimationContainer} />

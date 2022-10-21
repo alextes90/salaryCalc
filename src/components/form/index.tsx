@@ -22,9 +22,10 @@ type Props = {
   values: FormState;
   dispatch: React.Dispatch<Partial<FormState>>;
   onSubmit(e: React.FormEvent<HTMLFormElement>): void;
+  isFormBlocked: boolean;
 };
 
-export const Form = ({ values, dispatch, onSubmit }: Props) => {
+export const Form = ({ values, dispatch, onSubmit, isFormBlocked }: Props) => {
   const theme = useTheme();
   const mqMatches = useMediaQuery(theme.breakpoints.down('sm'));
   const [isAdvanced, setIsAdvanced] = useState(true);
@@ -104,8 +105,8 @@ export const Form = ({ values, dispatch, onSubmit }: Props) => {
             </FormControl>
           </Box>
         </Collapse>
-        <Button type="submit" variant="outlined">
-          Submit
+        <Button type="submit" variant="outlined" disabled={isFormBlocked}>
+          {isFormBlocked ? 'Change form to unblock' : 'Submit'}
         </Button>
       </Box>
     </form>

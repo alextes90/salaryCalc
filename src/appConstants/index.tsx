@@ -55,5 +55,12 @@ export const luxmedItems: { name: string; value: LuxmedType }[] = [
   { name: 'Family', value: 'FAMILY' },
 ];
 
-export const SALARY_CHART_COLORS = ['#CB3F43', '#00C49F', '#FFBB28', '#0088FE', '#FF8042'];
 export const SALARY_CHART_CUSTOM_STYLE = { fontFamily: 'Roboto, sans-serif' };
+
+export enum SalaryChartColors {
+  zus = '#CB3F43',
+  hi = '#00C49F',
+  ppk = '#FFBB28',
+  net = '#0088FE',
+  tax = '#FF8042',
+}
