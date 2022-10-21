@@ -1,6 +1,5 @@
-import React from 'react';
 import lottie, { AnimationItem } from 'lottie-web';
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 type Props = {
   animJson: unknown;
@@ -26,5 +25,15 @@ export const useAnimation = (props: Props) => {
     };
   }, []);
 
-  return { AnimationContainer: <div ref={animationContainer} />, animation: anim.current };
+  const destroyAnimation = () => {
+    if (!anim.current) return;
+    anim.current?.destroy();
+    anim.current = null;
+  };
+
+  return {
+    AnimationContainer: <div ref={animationContainer} />,
+    animation: anim.current,
+    destroyAnimation,
+  };
 };

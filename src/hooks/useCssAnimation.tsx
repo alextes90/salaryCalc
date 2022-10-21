@@ -9,8 +9,7 @@ export const useCssAnimation = (animateClass: string, elementClass: string): Css
     if (!animElement.current) {
       animElement.current = document.querySelector(`.${elementClass}`);
       if (animElement.current) {
-        animElement.current?.addEventListener('animationend', onRemoveAnimationClass);
-        animElement.current?.classList?.add(animateClass);
+        animElement.current?.addEventListener('animationend', handleRemoveAnimationClass);
       }
     }
     animElement.current?.classList?.add(animateClass);
@@ -18,11 +17,11 @@ export const useCssAnimation = (animateClass: string, elementClass: string): Css
 
   useEffect(() => {
     return () => {
-      animElement.current?.removeEventListener('animationend', onRemoveAnimationClass);
+      animElement.current?.removeEventListener('animationend', handleRemoveAnimationClass);
     };
   }, []);
 
-  const onRemoveAnimationClass = () => {
+  const handleRemoveAnimationClass = () => {
     animElement.current?.classList?.remove(animateClass);
   };
 

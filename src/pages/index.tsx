@@ -40,7 +40,7 @@ const IndexPage = () => {
   const [calculatedSalary, setCalculatedSalary] = useState<Salary>();
   const [isFormBlocked, setIsFormBlocked] = useState(false);
 
-  const { animation, AnimationContainer } = useAnimation({ animJson: piggy });
+  const { animation, AnimationContainer, destroyAnimation } = useAnimation({ animJson: piggy });
   const unsubscribeLoopPiggyAnimation = useRef<(() => void | undefined) | null>(null);
 
   const { run, isPending, isError, data: usdCourse } = useAsync<ExchangeResponse>();
@@ -51,6 +51,7 @@ const IndexPage = () => {
   }, [run]);
 
   useEffect(() => {
+    if (!animation) return;
     unsubscribeLoopPiggyAnimation.current = bootstrapPiggyAnimation(animation);
   }, [animation]);
 
@@ -62,11 +63,18 @@ const IndexPage = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    unsubscribeLoopPiggyAnimation.current && unsubscribeLoopPiggyAnimation.current();
     const salary = calculateNetSalary(formState);
-    continuePiggyAnimation(animation, () => {
+    if (animation) {
+      unsubscribeLoopPiggyAnimation.current && unsubscribeLoopPiggyAnimation.current();
+
+      continuePiggyAnimation(animation, () => {
+        setCalculatedSalary(salary);
+        destroyAnimation();
+      });
+    } else {
       setCalculatedSalary(salary);
-    });
+    }
+
     setIsFormBlocked(true);
   };
 
