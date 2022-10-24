@@ -45,5 +45,6 @@ export const useAsync = <T,>() => {
     isPending: status === Statuses.pending,
     isSuccess: status === Statuses.resolved,
     isError: status === Statuses.rejected,
+    isIdle: status === Statuses.idle,
   };
 };

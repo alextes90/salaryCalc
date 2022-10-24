@@ -43,7 +43,7 @@ const IndexPage = () => {
   const { animation, AnimationContainer, destroyAnimation } = useAnimation({ animJson: piggy });
   const unsubscribeLoopPiggyAnimation = useRef<(() => void | undefined) | null>(null);
 
-  const { run, isPending, isError, data: usdCourse } = useAsync<ExchangeResponse>();
+  const { run, isPending, isIdle, isError, data: usdCourse } = useAsync<ExchangeResponse>();
 
   useEffect(() => {
     const params = 'currency=USD&value=1';
@@ -82,11 +82,12 @@ const IndexPage = () => {
     ? ` ($${calculateInDolars(calculatedSalary?.net, +usdCourse?.value)})`
     : '';
 
-  const usdStringFormat = isPending
-    ? 'Loading...'
-    : isError
-    ? 'No data to show'
-    : `${Number(usdCourse?.value).toFixed(2)}zł`;
+  const usdStringFormat =
+    isPending || isIdle
+      ? 'Loading...'
+      : isError
+      ? 'No data to show'
+      : `${Number(usdCourse?.value).toFixed(2)}zł`;
 
   return (
     <Box sx={appContainerStyle}>
