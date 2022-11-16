@@ -4,7 +4,7 @@ import { EXCHANGE_RATE_API } from 'appConstants';
 import { calculateNetSalary, calculateInDolars } from 'utils';
 import { Box, Typography, Grid } from '@mui/material';
 import { FormState, Salary } from 'types';
-import { appContainerStyle, headerStyle, tiltAnimationStyle } from 'styled';
+import { appContainerStyle, headerStyle, ratesStyle, tiltAnimationStyle } from 'styled';
 import piggy from 'components/animation/anim.json';
 import { useAnimation } from 'hooks/useAnimation';
 import {
@@ -70,10 +70,10 @@ const IndexPage = () => {
   };
 
   const usdSalaryStringFormat = !!rates
-    ? ` ($${calculateInDolars(calculatedSalary?.net, +rates?.usdRate)}) (€${calculateInDolars(
-        calculatedSalary?.net,
-        +rates?.euroRate
-      )})`
+    ? `${calculateInDolars(calculatedSalary?.net, +rates?.usdRate)}$`
+    : '';
+  const euroSalaryStringFormat = !!rates
+    ? `${calculateInDolars(calculatedSalary?.net, +rates?.euroRate)}€`
     : '';
 
   const currenciesStringFormat =
@@ -87,21 +87,31 @@ const IndexPage = () => {
     <Box sx={appContainerStyle}>
       <SEO title="SalaryCalc" />
       <Box sx={headerStyle}>
-        {calculatedSalary ? (
-          <Typography sx={tiltAnimationStyle} variant="h5" align="center">
-            Your net salary: {calculatedSalary?.net}zł {usdSalaryStringFormat}
+        <Box sx={ratesStyle}>
+          <Typography variant="subtitle2" align="center">
+            $1.00 = {currenciesStringFormat[0]}
           </Typography>
+          <Typography variant="subtitle2" align="center">
+            €1.00 = {currenciesStringFormat[1]}
+          </Typography>
+        </Box>
+        {calculatedSalary ? (
+          <Box>
+            <Typography sx={tiltAnimationStyle} variant="h5" align="center" mr="2rem">
+              Your net salary: {calculatedSalary?.net}zł
+            </Typography>
+            <Typography sx={tiltAnimationStyle} variant="h5" align="center" mr="2rem">
+              Converted to USD: {usdSalaryStringFormat}
+            </Typography>
+            <Typography sx={tiltAnimationStyle} variant="h5" align="center" mr="2rem">
+              Converted to EUR: {euroSalaryStringFormat}
+            </Typography>
+          </Box>
         ) : (
           <Typography variant="h5" align="center">
             Submit form to calculate salary
           </Typography>
         )}
-        <Typography variant="subtitle2" align="center">
-          Current USD Course: $1.00 = {currenciesStringFormat[0]}
-        </Typography>
-        <Typography variant="subtitle2" align="center">
-          Current EUR Course: €1.00 = {currenciesStringFormat[1]}
-        </Typography>
       </Box>
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={10} sm={6}>
