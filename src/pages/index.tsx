@@ -17,7 +17,8 @@ import { client } from 'utils/apiClient';
 type ExchangeResponse = {
   status: number;
   amount: number;
-  value: string;
+  usdRate: string;
+  euroRate: string;
 };
 
 const initialFormValues: FormState = {
@@ -42,11 +43,10 @@ const IndexPage = () => {
   const { animation, AnimationContainer, destroyAnimation } = useAnimation({ animJson: piggy });
   const unsubscribeLoopPiggyAnimation = useRef<(() => void | undefined) | null>(null);
 
-  const { run, isPending, isIdle, isError, data: usdCourse } = useAsync<ExchangeResponse>();
+  const { run, isPending, isIdle, isError, data: rates } = useAsync<ExchangeResponse>();
 
   useEffect(() => {
-    const params = 'currency=USD&value=1';
-    run(client<ExchangeResponse>(`${EXCHANGE_RATE_API}?${params}`));
+    run(client<ExchangeResponse>(`${EXCHANGE_RATE_API}`));
   }, [run]);
 
   useEffect(() => {
@@ -69,16 +69,19 @@ const IndexPage = () => {
     }
   };
 
-  const usdSalaryStringFormat = !!usdCourse
-    ? ` ($${calculateInDolars(calculatedSalary?.net, +usdCourse?.value)})`
+  const usdSalaryStringFormat = !!rates
+    ? ` ($${calculateInDolars(calculatedSalary?.net, +rates?.usdRate)}) (€${calculateInDolars(
+        calculatedSalary?.net,
+        +rates?.euroRate
+      )})`
     : '';
 
-  const usdStringFormat =
+  const currenciesStringFormat =
     isPending || isIdle
-      ? 'Loading...'
+      ? ['Loading...', 'Loading...']
       : isError
-      ? 'No data to show'
-      : `${Number(usdCourse?.value).toFixed(2)}zł`;
+      ? ['No data to show', 'No data to show']
+      : [`${Number(rates?.usdRate).toFixed(2)}zł`, `${Number(rates?.euroRate).toFixed(2)}zł`];
 
   return (
     <Box sx={appContainerStyle}>
@@ -94,7 +97,10 @@ const IndexPage = () => {
           </Typography>
         )}
         <Typography variant="subtitle2" align="center">
-          Current USD Course: $1.00 = {usdStringFormat}
+          Current USD Course: $1.00 = {currenciesStringFormat[0]}
+        </Typography>
+        <Typography variant="subtitle2" align="center">
+          Current EURO Course: €1.00 = {currenciesStringFormat[1]}
         </Typography>
       </Box>
       <Grid container spacing={2} justifyContent="center">

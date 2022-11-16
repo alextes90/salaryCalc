@@ -1,6 +1,7 @@
 import { LuxmedType, MultiSportType } from 'types';
 
-export const EXCHANGE_RATE_API = 'https://basic-exchanger.herokuapp.com';
+export const EXCHANGE_RATE_API =
+  'https://f7mhp4w4c6.execute-api.eu-west-1.amazonaws.com/default/getExchangeRates';
 
 export const LUXMED = {
   INDIVIDUAL: 105,
