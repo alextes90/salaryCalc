@@ -100,7 +100,7 @@ const IndexPage = () => {
           Current USD Course: $1.00 = {currenciesStringFormat[0]}
         </Typography>
         <Typography variant="subtitle2" align="center">
-          Current EURO Course: €1.00 = {currenciesStringFormat[1]}
+          Current EUR Course: €1.00 = {currenciesStringFormat[1]}
         </Typography>
       </Box>
       <Grid container spacing={2} justifyContent="center">
