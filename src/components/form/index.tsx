@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent, Dispatch } from 'react';
 import { formContainerStyle } from 'styled';
 import { FormState, LuxmedType, MultiSportType, PpkType } from 'types';
 import {
@@ -20,30 +20,49 @@ import { luxmedItems, multisportItems, taxRateItems } from 'appConstants';
 
 type Props = {
   values: FormState;
-  dispatch: React.Dispatch<Partial<FormState>>;
-  onSubmit(e: React.FormEvent<HTMLFormElement>): void;
-  isFormBlocked: boolean;
+  dispatch: Dispatch<Partial<FormState>>;
+  onSubmit(e: FormEvent<HTMLFormElement>): void;
 };
 
-export const Form = ({ values, dispatch, onSubmit, isFormBlocked }: Props) => {
+export const Form = ({ values, dispatch, onSubmit }: Props) => {
   const theme = useTheme();
   const mqMatches = useMediaQuery(theme.breakpoints.down('sm'));
   const [isAdvanced, setIsAdvanced] = useState(true);
+  const [isFormBlocked, setIsFormBlocked] = useState(false);
 
   useEffect(() => {
     setIsAdvanced(!mqMatches);
   }, [mqMatches]);
 
-  const handleChange = () => {
+  const handleTogglerChange = () => {
     setIsAdvanced((prev) => !prev);
+  };
+  const handleSubmitEnhanced = (e: FormEvent<HTMLFormElement>) => {
+    setIsFormBlocked(true);
+    onSubmit(e);
+  };
+
+  const changeCallbacks = {
+    ['salary-gross']: (value: string) => dispatch({ gross: value }),
+    ['tax-rate']: (value: string) => dispatch({ tax: value }),
+    ['my-multisport']: (value: string) => dispatch({ myMultisport: value as MultiSportType }),
+    ['parther-multisport']: (value: string) =>
+      dispatch({ partnerMultisport: value as MultiSportType }),
+    ['luxmed']: (value: string) => dispatch({ luxmed: value as LuxmedType }),
+    ['ppk']: (value: string) => dispatch({ ppk: value as PpkType }),
+  };
+
+  const handleChangeEnhanced = (value: string, name: keyof typeof changeCallbacks) => {
+    if (isFormBlocked) setIsFormBlocked(false);
+    changeCallbacks[name](value);
   };
 
   return (
-    <form onSubmit={onSubmit} data-testid="salary-form">
+    <form onSubmit={handleSubmitEnhanced} data-testid="salary-form">
       <Box sx={formContainerStyle}>
         <FormControlLabel
           label="Show advanced options"
-          control={<Switch checked={isAdvanced} onChange={handleChange} />}
+          control={<Switch checked={isAdvanced} onChange={handleTogglerChange} />}
         />
         <TextField
           required
@@ -51,7 +70,7 @@ export const Form = ({ values, dispatch, onSubmit, isFormBlocked }: Props) => {
           label="Salary gross"
           type="number"
           defaultValue={values.gross}
-          onChange={(e) => dispatch({ gross: e.target.value })}
+          onChange={(e) => handleChangeEnhanced(e.target.value, 'salary-gross')}
           InputLabelProps={{
             shrink: true,
           }}
@@ -63,7 +82,7 @@ export const Form = ({ values, dispatch, onSubmit, isFormBlocked }: Props) => {
           required
           id="tax-rate"
           value={values.tax}
-          onChange={(e) => dispatch({ tax: e.target.value })}
+          onChange={(e) => handleChangeEnhanced(e.target.value, 'tax-rate')}
           items={taxRateItems}
           label="Tax rate"
         />
@@ -72,21 +91,21 @@ export const Form = ({ values, dispatch, onSubmit, isFormBlocked }: Props) => {
             <CustomSelect
               id="my-multisport"
               value={values.myMultisport}
-              onChange={(e) => dispatch({ myMultisport: e.target.value as MultiSportType })}
+              onChange={(e) => handleChangeEnhanced(e.target.value, 'my-multisport')}
               items={multisportItems}
               label="My Multisport"
             />
             <CustomSelect
-              id="parent-multisport"
+              id="parther-multisport"
               value={values.partnerMultisport}
-              onChange={(e) => dispatch({ partnerMultisport: e.target.value as MultiSportType })}
+              onChange={(e) => handleChangeEnhanced(e.target.value, 'parther-multisport')}
               items={multisportItems}
               label="Partner Multisport"
             />
             <CustomSelect
               id="luxmed"
               value={values.luxmed}
-              onChange={(e) => dispatch({ luxmed: e.target.value as LuxmedType })}
+              onChange={(e) => handleChangeEnhanced(e.target.value, 'luxmed')}
               items={luxmedItems}
               label="Luxmed Medical Package"
             />
@@ -94,10 +113,11 @@ export const Form = ({ values, dispatch, onSubmit, isFormBlocked }: Props) => {
               <FormLabel id="ppk-label">Do you use PPK?</FormLabel>
               <RadioGroup
                 row
+                id="ppk"
                 aria-labelledby="ppk-label"
                 name="ppk"
                 value={values.ppk}
-                onChange={(e) => dispatch({ ppk: e.target.value as PpkType })}
+                onChange={(e) => handleChangeEnhanced(e.target.value, 'ppk')}
               >
                 <FormControlLabel value="YES" control={<Radio />} label="Yes" />
                 <FormControlLabel value="NO" control={<Radio />} label="No" />

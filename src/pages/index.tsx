@@ -17,7 +17,8 @@ import { client } from 'utils/apiClient';
 type ExchangeResponse = {
   status: number;
   amount: number;
-  value: string;
+  usdRate: string;
+  euroRate: string;
 };
 
 const initialFormValues: FormState = {
@@ -38,28 +39,20 @@ const IndexPage = () => {
   );
 
   const [calculatedSalary, setCalculatedSalary] = useState<Salary>();
-  const [isFormBlocked, setIsFormBlocked] = useState(false);
 
   const { animation, AnimationContainer, destroyAnimation } = useAnimation({ animJson: piggy });
   const unsubscribeLoopPiggyAnimation = useRef<(() => void | undefined) | null>(null);
 
-  const { run, isPending, isIdle, isError, data: usdCourse } = useAsync<ExchangeResponse>();
+  const { run, isPending, isIdle, isError, data: rates } = useAsync<ExchangeResponse>();
 
   useEffect(() => {
-    const params = 'currency=USD&value=1';
-    run(client<ExchangeResponse>(`${EXCHANGE_RATE_API}?${params}`));
+    run(client<ExchangeResponse>(`${EXCHANGE_RATE_API}`));
   }, [run]);
 
   useEffect(() => {
     if (!animation) return;
     unsubscribeLoopPiggyAnimation.current = bootstrapPiggyAnimation(animation);
   }, [animation]);
-
-  useEffect(() => {
-    if (isFormBlocked) {
-      setIsFormBlocked(false);
-    }
-  }, [formState]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -74,20 +67,21 @@ const IndexPage = () => {
     } else {
       setCalculatedSalary(salary);
     }
-
-    setIsFormBlocked(true);
   };
 
-  const usdSalaryStringFormat = !!usdCourse
-    ? ` ($${calculateInDolars(calculatedSalary?.net, +usdCourse?.value)})`
+  const usdSalaryStringFormat = !!rates
+    ? ` ($${calculateInDolars(calculatedSalary?.net, +rates?.usdRate)}) (€${calculateInDolars(
+        calculatedSalary?.net,
+        +rates?.euroRate
+      )})`
     : '';
 
-  const usdStringFormat =
+  const currenciesStringFormat =
     isPending || isIdle
-      ? 'Loading...'
+      ? ['Loading...', 'Loading...']
       : isError
-      ? 'No data to show'
-      : `${Number(usdCourse?.value).toFixed(2)}zł`;
+      ? ['No data to show', 'No data to show']
+      : [`${Number(rates?.usdRate).toFixed(2)}zł`, `${Number(rates?.euroRate).toFixed(2)}zł`];
 
   return (
     <Box sx={appContainerStyle}>
@@ -103,17 +97,15 @@ const IndexPage = () => {
           </Typography>
         )}
         <Typography variant="subtitle2" align="center">
-          Current USD Course: $1.00 = {usdStringFormat}
+          Current USD Course: $1.00 = {currenciesStringFormat[0]}
+        </Typography>
+        <Typography variant="subtitle2" align="center">
+          Current EURO Course: €1.00 = {currenciesStringFormat[1]}
         </Typography>
       </Box>
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={10} sm={6}>
-          <Form
-            values={formState}
-            dispatch={dispatchForm}
-            onSubmit={handleSubmit}
-            isFormBlocked={isFormBlocked}
-          />
+          <Form values={formState} dispatch={dispatchForm} onSubmit={handleSubmit} />
         </Grid>
         <Grid item xs={10} sm={6}>
           <Results salary={calculatedSalary} PiggyAnim={AnimationContainer} />
