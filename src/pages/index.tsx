@@ -2,7 +2,10 @@ import React, { useEffect, useState, useReducer, useRef } from 'react';
 import { SEO, Form, Results } from 'components';
 import { EXCHANGE_RATE_API } from 'appConstants';
 import { calculateNetSalary, calculateInDolars } from 'utils';
-import { Box, Typography, Grid } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import CircularProgress from '@mui/material/CircularProgress';
 import { FormState, Salary } from 'types';
 import { headerStyle, tiltAnimationStyle } from 'styled';
 import piggy from 'components/animation/anim.json';
@@ -79,7 +82,16 @@ const IndexPage = () => {
 
   const currenciesStringFormat =
     isPending || isIdle
-      ? ['Loading...', 'Loading...']
+      ? [
+          <>
+            {' '}
+            <CircularProgress size="16px" key="1" color="inherit" /> zl
+          </>,
+          <>
+            {' '}
+            <CircularProgress size="16px" key="0" color="inherit" /> zl
+          </>,
+        ]
       : isError
       ? ['No data to show', 'No data to show']
       : [`${Number(rates?.usdRate).toFixed(2)}zł`, `${Number(rates?.euroRate).toFixed(2)}zł`];
@@ -88,11 +100,11 @@ const IndexPage = () => {
     <Box my="0" mx="auto">
       <SEO title="SalaryCalc" />
       <Box sx={headerStyle}>
-        <Box display="flex" justifyContent="space-evenly" mb="8px">
-          <Typography variant="subtitle2" align="center">
+        <Box display="flex" justifyContent="center" mb="8px">
+          <Typography variant="subtitle1" align="center" mr="1rem" minWidth="150px">
             $1.00 = {currenciesStringFormat[0]}
           </Typography>
-          <Typography variant="subtitle2" align="center">
+          <Typography variant="subtitle1" align="center" minWidth="150px">
             €1.00 = {currenciesStringFormat[1]}
           </Typography>
         </Box>
