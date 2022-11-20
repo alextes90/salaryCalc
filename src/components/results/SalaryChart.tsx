@@ -16,20 +16,41 @@ type RenderLabelProps = {
   midAngle: number;
   innerRadius: number;
   outerRadius: number;
+  percent: number;
   payload: { value: number };
 };
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = (props: RenderLabelProps) => {
-  const { cx, cy, midAngle, innerRadius, outerRadius, payload, color } = props;
-  const radius = innerRadius + (outerRadius - innerRadius) * 1.1;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const { cx, cy, midAngle, innerRadius, outerRadius, payload, percent, color } = props;
+  const radius = innerRadius + (outerRadius - innerRadius);
+  const x = cx + radius * Math.cos(-midAngle * RADIAN) * 1.1;
+  const x2 = cx + radius * Math.cos(-midAngle * RADIAN) * 0.58;
+  const y = cy + radius * Math.sin(-midAngle * RADIAN) * 1.1;
+  const y2 = cy + radius * Math.sin(-midAngle * RADIAN) * 0.6;
 
   return (
-    <text x={x} y={y} fill={color} textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-      {payload.value}
-    </text>
+    <>
+      <text
+        x={x}
+        y={y}
+        fill={color}
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+      >
+        {payload.value}
+      </text>
+      <text
+        x={x2}
+        y={y2}
+        fill="#ffffff"
+        fontSize="14px"
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+      >
+        {`${(percent * 100).toFixed(2)}%`}
+      </text>
+    </>
   );
 };
 
