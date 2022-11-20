@@ -115,10 +115,10 @@ const IndexPage = () => {
         )}
       </Box>
       <Grid container px="1rem" maxWidth="1200px" mx="auto" justifyContent="center">
-        <Grid item xs={10} sm={8}>
+        <Grid item xs={10} sm={6}>
           <Form values={formState} dispatch={dispatchForm} onSubmit={handleSubmit} />
         </Grid>
-        <Grid item xs={10} sm={8}>
+        <Grid item xs={10} sm={6}>
           <Results salary={calculatedSalary} PiggyAnim={AnimationContainer} />
         </Grid>
       </Grid>
