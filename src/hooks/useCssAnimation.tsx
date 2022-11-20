@@ -5,6 +5,10 @@ type CssAnimation = { runAnimation: () => void };
 export const useCssAnimation = (animateClass: string, elementClass: string): CssAnimation => {
   const animElement = useRef<Element | null>(null);
 
+  const handleRemoveAnimationClass = useCallback(() => {
+    animElement.current?.classList?.remove(animateClass);
+  }, [animateClass]);
+
   const runAnimation = useCallback(() => {
     if (!animElement.current) {
       animElement.current = document.querySelector(`.${elementClass}`);
@@ -13,17 +17,13 @@ export const useCssAnimation = (animateClass: string, elementClass: string): Css
       }
     }
     animElement.current?.classList?.add(animateClass);
-  }, [animElement.current]);
+  }, [handleRemoveAnimationClass, animateClass, elementClass]);
 
   useEffect(() => {
     return () => {
       animElement.current?.removeEventListener('animationend', handleRemoveAnimationClass);
     };
-  }, []);
-
-  const handleRemoveAnimationClass = () => {
-    animElement.current?.classList?.remove(animateClass);
-  };
+  }, [handleRemoveAnimationClass]);
 
   return { runAnimation };
 };

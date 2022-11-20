@@ -8,7 +8,6 @@ const config: GatsbyConfig = {
     siteUrl: `https://salarycalc.gatsbyjs.io/`,
   },
   plugins: [
-    'gatsby-plugin-styled-components',
     'gatsby-plugin-image',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-sitemap',

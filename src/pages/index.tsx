@@ -4,7 +4,7 @@ import { EXCHANGE_RATE_API } from 'appConstants';
 import { calculateNetSalary, calculateInDolars } from 'utils';
 import { Box, Typography, Grid } from '@mui/material';
 import { FormState, Salary } from 'types';
-import { appContainerStyle, headerStyle, ratesStyle, tiltAnimationStyle } from 'styled';
+import { headerStyle, tiltAnimationStyle } from 'styled';
 import piggy from 'components/animation/anim.json';
 import { useAnimation } from 'hooks/useAnimation';
 import {
@@ -13,6 +13,7 @@ import {
 } from 'components/animation/animationUtils';
 import { useAsync } from 'hooks/useAsync';
 import { client } from 'utils/apiClient';
+import '../styles/index.css';
 
 type ExchangeResponse = {
   status: number;
@@ -84,10 +85,10 @@ const IndexPage = () => {
       : [`${Number(rates?.usdRate).toFixed(2)}zł`, `${Number(rates?.euroRate).toFixed(2)}zł`];
 
   return (
-    <Box sx={appContainerStyle}>
+    <Box my="0" mx="auto">
       <SEO title="SalaryCalc" />
       <Box sx={headerStyle}>
-        <Box sx={ratesStyle}>
+        <Box display="flex" justifyContent="space-evenly" mb="8px">
           <Typography variant="subtitle2" align="center">
             $1.00 = {currenciesStringFormat[0]}
           </Typography>
@@ -97,13 +98,13 @@ const IndexPage = () => {
         </Box>
         {calculatedSalary ? (
           <Box>
-            <Typography sx={tiltAnimationStyle} variant="h5" align="center" mr="2rem">
+            <Typography sx={tiltAnimationStyle} variant="h5" align="center">
               Your net salary: {calculatedSalary?.net}zł
             </Typography>
-            <Typography sx={tiltAnimationStyle} variant="h5" align="center" mr="2rem">
+            <Typography sx={tiltAnimationStyle} variant="h5" align="center">
               Converted to USD: {usdSalaryStringFormat}
             </Typography>
-            <Typography sx={tiltAnimationStyle} variant="h5" align="center" mr="2rem">
+            <Typography sx={tiltAnimationStyle} variant="h5" align="center">
               Converted to EUR: {euroSalaryStringFormat}
             </Typography>
           </Box>
@@ -113,11 +114,11 @@ const IndexPage = () => {
           </Typography>
         )}
       </Box>
-      <Grid container spacing={2} justifyContent="center">
-        <Grid item xs={10} sm={6}>
+      <Grid container px="1rem" maxWidth="1200px" mx="auto" justifyContent="center">
+        <Grid item xs={10} sm={8}>
           <Form values={formState} dispatch={dispatchForm} onSubmit={handleSubmit} />
         </Grid>
-        <Grid item xs={10} sm={6}>
+        <Grid item xs={10} sm={8}>
           <Results salary={calculatedSalary} PiggyAnim={AnimationContainer} />
         </Grid>
       </Grid>

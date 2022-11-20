@@ -2,11 +2,35 @@ import React, { useEffect } from 'react';
 import { Salary } from 'types';
 import { PieChart, Pie, ResponsiveContainer, Cell, Legend } from 'recharts';
 import { SalaryChartColors, SALARY_CHART_CUSTOM_STYLE } from 'appConstants';
-import './chartAnimation.css';
 import { useCssAnimation } from 'hooks/useCssAnimation';
+import './chartAnimation.css';
 
 type Props = {
   salary?: Salary;
+};
+
+type RenderLabelProps = {
+  cx: number;
+  cy: number;
+  color: string;
+  midAngle: number;
+  innerRadius: number;
+  outerRadius: number;
+  payload: { value: number };
+};
+
+const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = (props: RenderLabelProps) => {
+  const { cx, cy, midAngle, innerRadius, outerRadius, payload, color } = props;
+  const radius = innerRadius + (outerRadius - innerRadius) * 1.1;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text x={x} y={y} fill={color} textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      {payload.value}
+    </text>
+  );
 };
 
 export const SalaryChart = ({ salary }: Props) => {
@@ -22,16 +46,17 @@ export const SalaryChart = ({ salary }: Props) => {
 
   useEffect(() => {
     runChartAnimation();
-  }, [salary?.net]);
+  }, [salary?.net, runChartAnimation]);
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <PieChart width={600} height={600}>
+      <PieChart width={600} height={500}>
         <Pie
           data={data}
           cx="50%"
           cy="50%"
-          label
+          label={renderCustomizedLabel}
+          labelLine={false}
           fill="#8884d8"
           outerRadius="60%"
           dataKey="value"

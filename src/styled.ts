@@ -9,21 +9,12 @@ export const formContainerStyle = {
 };
 
 export const headerStyle = {
-  padding: '1em 2em 2em',
+  padding: '1em 2em',
   marginBottom: '2em',
   backgroundColor: '#0088fe',
   color: 'white',
-};
-
-export const ratesStyle = {
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'flex-start',
-};
-
-export const appContainerStyle = {
-  maxWidth: '1000px',
-  margin: '0 auto',
 };
 
 const tiltShake = keyframes`
