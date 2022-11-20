@@ -25,7 +25,7 @@ const renderCustomizedLabel = (props: RenderLabelProps) => {
   const { cx, cy, midAngle, innerRadius, outerRadius, payload, percent, color } = props;
   const radius = innerRadius + (outerRadius - innerRadius);
   const x = cx + radius * Math.cos(-midAngle * RADIAN) * 1.1;
-  const x2 = cx + radius * Math.cos(-midAngle * RADIAN) * 0.58;
+  const x2 = cx + radius * Math.cos(-midAngle * RADIAN) * 0.45;
   const y = cy + radius * Math.sin(-midAngle * RADIAN) * 1.1;
   const y2 = cy + radius * Math.sin(-midAngle * RADIAN) * 0.6;
 
