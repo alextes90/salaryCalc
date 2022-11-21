@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Form } from '..';
+import { Form } from '../index';
 import { FormState } from 'types';
 import mediaQuery from 'css-mediaquery';
 
