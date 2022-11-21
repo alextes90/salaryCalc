@@ -38,7 +38,7 @@ const renderCustomizedLabel = (props: RenderLabelProps) => {
         textAnchor={x > cx ? 'start' : 'end'}
         dominantBaseline="central"
       >
-        {payload.value}zl
+        {payload.value}
       </text>
       <text
         x={x2}
