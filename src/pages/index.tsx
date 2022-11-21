@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useReducer, useRef } from 'react';
-import { SEO, Form, Results } from 'components';
+import { SEO, Form, Results, ContactUs } from 'components';
 import { EXCHANGE_RATE_API } from 'appConstants';
 import { calculateNetSalary, calculateInDolars } from 'utils';
 import Box from '@mui/material/Box';
@@ -96,6 +96,7 @@ const IndexPage = () => {
   return (
     <Box my="0" mx="auto">
       <SEO title="SalaryCalc" />
+      <ContactUs />
       <Box sx={headerStyle}>
         <Box display="flex" justifyContent="center" mb="8px">
           <Typography variant="subtitle1" align="center" mr="1rem" minWidth="150px">
@@ -107,13 +108,13 @@ const IndexPage = () => {
         </Box>
         {calculatedSalary ? (
           <Box>
-            <Typography sx={tiltAnimationStyle} variant="h5" align="center">
+            <Typography sx={tiltAnimationStyle} variant="h6" align="center">
               Your net salary: {calculatedSalary?.net}zł
             </Typography>
-            <Typography sx={tiltAnimationStyle} variant="h5" align="center">
+            <Typography sx={tiltAnimationStyle} variant="h6" align="center">
               Converted to USD: {usdSalaryStringFormat}
             </Typography>
-            <Typography sx={tiltAnimationStyle} variant="h5" align="center">
+            <Typography sx={tiltAnimationStyle} variant="h6" align="center">
               Converted to EUR: {euroSalaryStringFormat}
             </Typography>
           </Box>
