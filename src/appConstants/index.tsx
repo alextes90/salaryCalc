@@ -65,3 +65,8 @@ export enum SalaryChartColors {
   net = '#0088FE',
   tax = '#FF8042',
 }
+
+export const PPK_DESCRIPTION =
+  'After the first 3 months of the contract, you will sign/reject an PPK agreement. If you click ';
+export const PPK_DESCRIPTION2 = ', the application will calculate the deductions for PPK as 2%. ';
+export const PPK_MORE_INFO_LINK = 'https://pfr.pl/en/employee-capital-plans.html';

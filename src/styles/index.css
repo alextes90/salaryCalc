@@ -2,3 +2,11 @@ body {
   margin: 0;
   padding: 0;
 }
+.infoIcon {
+  cursor: pointer;
+  margin-left: 4px;
+}
+.infoIconWrapper {
+  display: flex;
+  align-items: baseline;
+}

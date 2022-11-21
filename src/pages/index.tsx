@@ -7,13 +7,10 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import { FormState, Salary } from 'types';
-import { headerStyle, tiltAnimationStyle } from 'styled';
-import piggy from 'components/animation/anim.json';
+import { headerStyle, tiltAnimationStyle } from 'styles/styled';
+import piggy from 'features/animation/anim.json';
 import { useAnimation } from 'hooks/useAnimation';
-import {
-  bootstrapPiggyAnimation,
-  continuePiggyAnimation,
-} from 'components/animation/animationUtils';
+import { bootstrapPiggyAnimation, continuePiggyAnimation } from 'features/animation/animationUtils';
 import { useAsync } from 'hooks/useAsync';
 import { client } from 'utils/apiClient';
 import '../styles/index.css';
@@ -128,7 +125,7 @@ const IndexPage = () => {
       </Box>
       <Grid container px="1rem" maxWidth="1200px" mx="auto" justifyContent="center">
         <Grid item xs={10} sm={6}>
-          <Form values={formState} dispatch={dispatchForm} onSubmit={handleSubmit} />
+          <Form values={formState} dispatch={dispatchForm} handleSubmit={handleSubmit} />
         </Grid>
         <Grid item xs={10} sm={6}>
           <Results salary={calculatedSalary} PiggyAnim={AnimationContainer} />

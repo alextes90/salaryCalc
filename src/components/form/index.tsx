@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent, Dispatch } from 'react';
-import { formContainerStyle } from 'styled';
+import { formContainerStyle } from 'styles/styled';
 import { FormState, LuxmedType, MultiSportType, PpkType } from 'types';
 import {
   TextField,
@@ -15,16 +15,16 @@ import {
   Collapse,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { CustomSelect } from 'components/form/Select';
 import { luxmedItems, multisportItems, taxRateItems } from 'appConstants';
+import { InfoTooltip, CustomSelect } from './components';
 
 type Props = {
   values: FormState;
   dispatch: Dispatch<Partial<FormState>>;
-  onSubmit(e: FormEvent<HTMLFormElement>): void;
+  handleSubmit(e: FormEvent<HTMLFormElement>): void;
 };
 
-export const Form = ({ values, dispatch, onSubmit }: Props) => {
+export const Form = ({ values, dispatch, handleSubmit }: Props) => {
   const theme = useTheme();
   const mqMatches = useMediaQuery(theme.breakpoints.down('sm'));
   const [isAdvanced, setIsAdvanced] = useState(true);
@@ -39,7 +39,7 @@ export const Form = ({ values, dispatch, onSubmit }: Props) => {
   };
   const handleSubmitEnhanced = (e: FormEvent<HTMLFormElement>) => {
     setIsFormBlocked(true);
-    onSubmit(e);
+    handleSubmit(e);
   };
 
   const changeCallbacks = {
@@ -67,7 +67,7 @@ export const Form = ({ values, dispatch, onSubmit }: Props) => {
         <TextField
           required
           id="salary-gross"
-          label="Salary gross"
+          label="Salary gross (zl)"
           type="number"
           defaultValue={values.gross}
           onChange={(e) => handleChangeEnhanced(e.target.value, 'salary-gross')}
@@ -110,7 +110,10 @@ export const Form = ({ values, dispatch, onSubmit }: Props) => {
               label="Luxmed Medical Package"
             />
             <FormControl required>
-              <FormLabel id="ppk-label">Do you use PPK?</FormLabel>
+              <FormLabel id="ppk-label" className="infoIconWrapper">
+                <span>Do you use PPK? </span>
+                <InfoTooltip />
+              </FormLabel>
               <RadioGroup
                 row
                 id="ppk"
