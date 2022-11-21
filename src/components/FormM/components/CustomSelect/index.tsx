@@ -29,7 +29,7 @@ export const CustomSelect = (props: CustomSelectProps) => {
             {item.name}{' '}
             {item.name === '0%' && (
               <InfoTooltip
-                title={`up to ${TAX_THRESHOLD_UNDER_26}zl theshold for employees under 26 `}
+                title={`up to ${TAX_THRESHOLD_UNDER_26}zl threshold for employees under 26 `}
               />
             )}
           </MenuItem>
