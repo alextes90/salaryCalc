@@ -4,7 +4,7 @@ export const EXCHANGE_RATE_API =
   'https://f7mhp4w4c6.execute-api.eu-west-1.amazonaws.com/default/getExchangeRates';
 
 export const LUXMED = {
-  INDIVIDUAL: 105,
+  INDIVIDUAL: 68.20,
   PARTNER: 157.5,
   FAMILY: 287.5,
   NOT_APPLICABLE: 0,
