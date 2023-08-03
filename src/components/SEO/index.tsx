@@ -78,7 +78,9 @@ export const SEO: FC<Props> = ({ description = '', lang = 'en', meta = [], title
           content: metaDescription,
         },
       ].concat(meta)}
-    />
+    >
+      <meta name="google-site-verification" content="tF4GtMpPa9LgtQcFjIGzAEabUI0IRvv_KMH8lbi7LM8" />
+   </Helmet>
   );
 };
 
