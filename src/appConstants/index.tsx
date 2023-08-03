@@ -5,8 +5,8 @@ export const EXCHANGE_RATE_API =
 
 export const LUXMED = {
   INDIVIDUAL: 68.20,
-  PARTNER: 157.5,
-  FAMILY: 287.5,
+  PARTNER: 136.20,
+  FAMILY: 304.80,
   NOT_APPLICABLE: 0,
 };
 
