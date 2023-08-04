@@ -39,8 +39,9 @@ export const PENSION_CONTRIBUTION_RATE = 0.0976;
 export const taxRateItems = [
   { name: '0%', value: '0' },
   { name: '12%', value: '12' },
-  { name: '32%', value: '32' },
 ];
+  // 32% calculations are not to accurate and disabled waiting for better times
+  // { name: '32%', value: '32' },
 
 export const multisportItems: { name: string; value: MultiSportType }[] = [
   { name: 'Not applicable', value: 'NOT_APPLICABLE' },
