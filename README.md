@@ -1,4 +1,4 @@
-# ItechArt Salary Calculator
+# Vention Salary Calculator
 
 ## Required tools
 
